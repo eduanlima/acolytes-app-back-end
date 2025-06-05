@@ -1,6 +1,8 @@
 package br.com.posterius.acolyteapp.services;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,14 @@ public class PersonService {
 	public List<PersonDTO> findAll(){
 		return personRepository.findAll().stream().map(e -> new PersonDTO(e)).toList();
 	}
+	
+	
+	@Transactional(readOnly = true)
+	public PersonDTO findById(UUID id) {
+		Optional<Person> optional = personRepository.findById(id);
+		Person entity = optional.get();
+		return new PersonDTO(entity);
+	} 
 	
 	@Transactional
 	public PersonDTO insert(PersonDTO dto) {
