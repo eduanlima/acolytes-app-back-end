@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Person {
 	@EqualsAndHashCode.Include
 	@Id
-	@GeneratedValue(generator = "UUID")
+	@GeneratedValue(generator = "UUID", strategy = GenerationType.UUID)
 	private UUID id;
 	private Integer code;
 	private String firstName;
