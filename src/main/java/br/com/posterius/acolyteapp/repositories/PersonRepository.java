@@ -10,6 +10,6 @@ import br.com.posterius.acolyteapp.entities.Person;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, UUID> {
-	@Query("SELECT MAX(p.code) FROM person p")
+	@Query("SELECT MAX(p.code) AS code FROM Person p")
 	Integer findMaxCode();
 }

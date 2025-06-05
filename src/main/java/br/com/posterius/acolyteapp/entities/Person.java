@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Person {
 	@EqualsAndHashCode.Include
 	@Id
-	@GeneratedValue(generator = "UUID", strategy = GenerationType.UUID)
+	@GeneratedValue(generator = "UUID")
 	private UUID id;
 	private Integer code;
 	private String firstName;
