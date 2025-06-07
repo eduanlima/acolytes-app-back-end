@@ -41,6 +41,14 @@ public class PersonService {
 		return new PersonDTO(entity);
 	}
 	
+	@Transactional
+	public PersonDTO update(UUID id, PersonDTO dto) {
+		Person entity = personRepository.getReferenceById(id);
+		copyDtoToEntity(dto, entity);
+		entity = personRepository.save(entity);
+		return new PersonDTO(entity);
+	}
+	
 	private void copyDtoToEntity(PersonDTO dto, Person entity ) {
 		BeanUtils.copyProperties(dto, entity);
 	}
