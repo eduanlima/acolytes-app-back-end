@@ -44,7 +44,10 @@ public class PersonService {
 	@Transactional
 	public PersonDTO update(UUID id, PersonDTO dto) {
 		Person entity = personRepository.getReferenceById(id);
-		copyDtoToEntity(dto, entity);
+		entity.setFirstName(dto.getFirstName());
+		entity.setLastName(dto.getLastName());
+		entity.setDateBirth(dto.getDateBirth());
+		
 		entity = personRepository.save(entity);
 		return new PersonDTO(entity);
 	}
