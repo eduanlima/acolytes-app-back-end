@@ -33,4 +33,5 @@ public class Person {
 	private String lastName;
 	@NotNull
 	private Timestamp dateBirth;
+	private Boolean isActive;
 }
