@@ -1,0 +1,27 @@
+package br.com.posterius.acolyteapp.entities;
+
+import java.util.UUID;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@Data
+@Entity
+@Table(name = "user")
+public class User {
+	@EqualsAndHashCode.Include
+	@Id
+	@GeneratedValue(generator = "UUID")
+	private UUID id;
+	@NotNull
+	private String login;
+	@NotNull
+	private String password;
+}
