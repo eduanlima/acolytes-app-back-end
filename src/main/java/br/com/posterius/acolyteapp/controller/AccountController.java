@@ -11,13 +11,13 @@ import br.com.posterius.acolyteapp.entities.Account;
 import br.com.posterius.acolyteapp.services.AccountService;
 
 @RestController	
-@RequestMapping(value = "/user")
-public class UserController {
+@RequestMapping(value = "/account")
+public class AccountController {
 	@Autowired
 	private AccountService accountService;
 	
 	@GetMapping
-	public List<Account> finall() {
+	public List<Account> finAll() {
 		return accountService.findAll();
 	}
 }
