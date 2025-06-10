@@ -3,7 +3,6 @@ package br.com.posterius.acolyteapp.entities;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

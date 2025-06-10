@@ -5,6 +5,8 @@ import java.util.UUID;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -24,4 +26,8 @@ public class User {
 	private String login;
 	@NotNull
 	private String password;
+	@NotNull
+	@OneToOne
+	@JoinColumn(name = "person_id", referencedColumnName = "id")
+	private Person person;
 }
