@@ -1,7 +1,10 @@
 package br.com.posterius.acolyteapp.entities;
 
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.UUID;
+
+import org.hibernate.annotations.JdbcTypeCode;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,6 +24,7 @@ public class Person {
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(generator = "UUID")
+	@JdbcTypeCode(Types.VARCHAR)
 	private UUID id;
 	@NotNull
 	private Integer code;

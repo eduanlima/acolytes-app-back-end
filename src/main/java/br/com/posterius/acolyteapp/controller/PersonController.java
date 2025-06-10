@@ -25,18 +25,18 @@ public class PersonController {
 	private PersonService personService;
 	
 	@GetMapping
-	public List<PersonDTO> findAll(){
+	public List<PersonDTO> findAll() {
 		return personService.findAll();
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<PersonDTO> findById(@PathVariable UUID id){
+	public ResponseEntity<PersonDTO> findById(@PathVariable UUID id) {
 		PersonDTO dto = personService.findById(id);
 		return ResponseEntity.ok(dto);
 	}
 	
 	@PostMapping
-	public ResponseEntity<PersonDTO> insert(@RequestBody PersonDTO dto){
+	public ResponseEntity<PersonDTO> insert(@RequestBody PersonDTO dto) {
 		dto = personService.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
@@ -44,7 +44,7 @@ public class PersonController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<PersonDTO> update(@PathVariable UUID id, @RequestBody PersonDTO dto){
+	public ResponseEntity<PersonDTO> update(@PathVariable UUID id, @RequestBody PersonDTO dto) {
 		dto = personService.update(id, dto);
 		return ResponseEntity.ok(dto);
 	}

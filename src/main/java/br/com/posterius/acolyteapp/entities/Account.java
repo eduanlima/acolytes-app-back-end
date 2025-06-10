@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "account")
+public class Account {
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(generator = "UUID")
