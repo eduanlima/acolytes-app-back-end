@@ -14,12 +14,16 @@ public class AccountDTO {
 	private UUID id;
 	private String login;
 	private String password;
+	private Boolean isBlocked;
+	private Boolean isActivated;
 	private String firstName;
 	
 	public AccountDTO(Account entity) {
-		id = entity.getId();
-		login = entity.getLogin();
-		password = entity.getPassword();
-		firstName = entity.getPerson().getFirstName();
+		this.id = entity.getId();
+		this.login = entity.getLogin();
+		this.password = entity.getPassword();
+		this.isBlocked = entity.getIsBlocked();
+		this.isActivated = entity.getIsActivated();
+		this.firstName = entity.getPerson().getFirstName();
 	}
 }

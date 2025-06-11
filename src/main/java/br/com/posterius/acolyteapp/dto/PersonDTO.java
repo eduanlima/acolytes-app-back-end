@@ -17,6 +17,7 @@ public class PersonDTO {
 	private String firstName;
 	private String lastName;
 	private Timestamp dateBirth;
+	private Boolean isActivated;
 	
 	public PersonDTO(Person entity) {
 		BeanUtils.copyProperties(entity, this);
