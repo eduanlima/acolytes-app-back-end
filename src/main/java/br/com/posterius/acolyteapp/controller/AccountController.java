@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.posterius.acolyteapp.entities.Account;
+import br.com.posterius.acolyteapp.dto.AccountDTO;
 import br.com.posterius.acolyteapp.services.AccountService;
 
 @RestController	
@@ -17,7 +17,7 @@ public class AccountController {
 	private AccountService accountService;
 	
 	@GetMapping
-	public List<Account> finAll() {
+	public List<AccountDTO> finAll() {
 		return accountService.findAll();
 	}
 }
