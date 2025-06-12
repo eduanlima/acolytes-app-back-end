@@ -1,10 +1,7 @@
 package br.com.posterius.acolyteapp.dto;
 import java.util.UUID;
 
-import org.springframework.beans.BeanUtils;
-
 import br.com.posterius.acolyteapp.entities.Account;
-import br.com.posterius.acolyteapp.entities.Person;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
