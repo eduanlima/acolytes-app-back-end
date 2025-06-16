@@ -34,4 +34,5 @@ public class Account {
 	private Boolean isBlocked;
 	@NotNull
 	private Boolean isActivated;
+	private Integer role;
 }
