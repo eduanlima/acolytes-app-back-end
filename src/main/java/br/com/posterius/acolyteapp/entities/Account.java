@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,6 +40,7 @@ public class Account {
 	private Boolean isActivated;
 	private Integer role;
 	
+	@Transient
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
