@@ -47,4 +47,8 @@ public class Account {
 	public void encryptPassword(){
 		password = bCryptPasswordEncoder.encode(password);
 	}
+	
+	public boolean passwordIsCorrect(String password) {
+		return bCryptPasswordEncoder.matches(password, this.password);
+	}
 }
