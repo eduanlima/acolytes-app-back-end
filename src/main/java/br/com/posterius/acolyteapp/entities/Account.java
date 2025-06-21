@@ -44,6 +44,28 @@ public class Account {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	public boolean validatePassword() {		
+		if (password.length() < 8) 
+			return false;
+		
+		boolean hasNumber = false, hasSpecialChar =  false, hasUpperCase = false;
+		
+		for (char c : password.toCharArray()) {	
+			if (Character.isLetterOrDigit(c)) {
+				if (Character.isLetter(c) && Character.isUpperCase(c))
+					hasUpperCase = true;
+				
+				if (Character.isDigit(c))
+					hasNumber = true;
+			}
+				
+			if (!Character.isLetterOrDigit(c))
+				hasSpecialChar = true;
+		}
+		
+		return hasNumber && hasSpecialChar && hasUpperCase;
+	}
+	
 	public void encryptPassword(){
 		password = bCryptPasswordEncoder.encode(password);
 	}
