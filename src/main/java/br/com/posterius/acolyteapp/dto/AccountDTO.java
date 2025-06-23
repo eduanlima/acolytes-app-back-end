@@ -14,6 +14,7 @@ public class AccountDTO {
 	private Boolean isBlocked;
 	private Boolean isActivated;
 	private String firstName;
+	private Integer role;
 	
 	public AccountDTO(Account entity) {
 		this.id = entity.getId();
@@ -22,5 +23,6 @@ public class AccountDTO {
 		this.isBlocked = entity.getIsBlocked();
 		this.isActivated = entity.getIsActivated();
 		this.firstName = entity.getPerson().getFirstName();
+		this.role = entity.getRole();
 	}
 }
