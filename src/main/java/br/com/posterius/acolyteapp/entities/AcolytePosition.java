@@ -5,9 +5,8 @@ import java.util.UUID;
 import lombok.Data;
 
 @Data
-public class Position {
+public class AcolytePosition {
 	private UUID id;
-	private Integer code;
-	private String name;
-	private String description;
+	private Acolyte acolyte;
+	private Position position;
 }
