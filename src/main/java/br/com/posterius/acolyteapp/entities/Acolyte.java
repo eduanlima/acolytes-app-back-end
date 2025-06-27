@@ -10,5 +10,4 @@ import lombok.Data;
 public class Acolyte {
 	private UUID id;
 	private Person person;
-	private AcolyteType acolyteType;
 }
