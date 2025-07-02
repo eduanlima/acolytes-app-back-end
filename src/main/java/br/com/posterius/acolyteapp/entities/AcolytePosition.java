@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class AcolytePosition {
-	@EqualsAndHashCode.Include
 	private UUID id;
 	private Acolyte acolyte;
 	private Position position;
