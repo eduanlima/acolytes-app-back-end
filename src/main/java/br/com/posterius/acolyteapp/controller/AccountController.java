@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.posterius.acolyteapp.dto.AccountAcolyteResponseDTO;
 import br.com.posterius.acolyteapp.dto.AccountDTO;
 import br.com.posterius.acolyteapp.services.AccountService;
 
@@ -28,5 +29,11 @@ public class AccountController {
 	public ResponseEntity<AccountDTO> findById(@PathVariable UUID id) {
 		AccountDTO dto = accountService.findById(id);
 		return ResponseEntity.ok(dto);
+	}
+	
+	@GetMapping("/{idAccount}/acolytes")
+	public ResponseEntity<List<AccountAcolyteResponseDTO>> findAllAccountAcolyte(@PathVariable UUID idAccount){
+		var acolytes = accountService.findAllAccountAcolyte(idAccount);
+		return ResponseEntity.ok(acolytes);
 	}
 }

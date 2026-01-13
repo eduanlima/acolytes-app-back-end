@@ -9,5 +9,5 @@ import br.com.posterius.acolyteapp.entities.Account;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, UUID> {
-
+	
 }
