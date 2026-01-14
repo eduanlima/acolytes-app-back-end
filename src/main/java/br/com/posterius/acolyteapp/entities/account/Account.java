@@ -119,16 +119,16 @@ public class Account {
 		this.role = role;
 	}
 
+	public List<AccountAcolyte> getAccountAcolyte() {
+		return accountAcolyte;
+	}
+	
 	public BCryptPasswordEncoder getbCryptPasswordEncoder() {
 		return bCryptPasswordEncoder;
 	}
 
 	public void setbCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-	}
-
-	public List<AccountAcolyte> getAccountAcolyte() {
-		return accountAcolyte;
 	}
 
 	@Override

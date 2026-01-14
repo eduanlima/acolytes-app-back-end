@@ -1,5 +1,7 @@
 package br.com.posterius.acolyteapp.entities.acolyte;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -10,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -23,6 +26,8 @@ public class Acolyte {
 	@OneToOne
 	@JoinColumn(name = "person_id", referencedColumnName = "id")
 	private Person person;
+	@OneToMany(mappedBy = "acolyte")
+	private List<AcolytePosition> acolytePositions = new ArrayList<>();
 	
 	public Acolyte() {
 	}
@@ -46,6 +51,10 @@ public class Acolyte {
 
 	public void setPerson(Person person) {
 		this.person = person;
+	}
+	
+	public List<AcolytePosition> getAcolytePositions() {
+		return acolytePositions;
 	}
 
 	@Override

@@ -7,10 +7,8 @@ import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class AccountAcolyteId {
-	
 	@Column(name = "account_id")
 	private UUID accountId;
-	
 	@Column(name = "acolyte_id")
 	private UUID acolyteId;
 	
