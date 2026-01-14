@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import br.com.posterius.acolyteapp.entities.person.Person;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -44,9 +40,11 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	private List<UserAcolyte> accountAcolyte = new ArrayList<>();
 	
+	/*
 	@Transient
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	*/
 	
 	public User() {
 	}
@@ -123,6 +121,7 @@ public class User {
 		return accountAcolyte;
 	}
 	
+	/*
 	public BCryptPasswordEncoder getbCryptPasswordEncoder() {
 		return bCryptPasswordEncoder;
 	}
@@ -130,7 +129,8 @@ public class User {
 	public void setbCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
-
+	*/
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -170,6 +170,7 @@ public class User {
 		return hasNumber && hasSpecialChar && hasUpperCase;
 	}
 	
+	/*
 	public void encryptPassword(){
 		password = bCryptPasswordEncoder.encode(password);
 	}
@@ -177,4 +178,5 @@ public class User {
 	public boolean passwordIsCorrect(String password) {
 		return bCryptPasswordEncoder.matches(password, this.password);
 	}
+	*/
 }
