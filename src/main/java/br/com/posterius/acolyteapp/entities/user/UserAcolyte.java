@@ -1,4 +1,4 @@
-package br.com.posterius.acolyteapp.entities.account;
+package br.com.posterius.acolyteapp.entities.user;
 
 import br.com.posterius.acolyteapp.entities.acolyte.Acolyte;
 import jakarta.persistence.EmbeddedId;
@@ -9,33 +9,33 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_account_acolyte")
-public class AccountAcolyte {
+@Table(name = "tb_user_acolyte")
+public class UserAcolyte {
 	@EmbeddedId
-	private AccountAcolyteId id;
+	private UserAcolyteId id;
 	@ManyToOne
-	@MapsId("accountId")
-	@JoinColumn(name = "account_id")
-	private Account account;
+	@MapsId("userId")
+	@JoinColumn(name = "user_id")
+	private User user;
 	@ManyToOne
 	@MapsId("acolyteId")
 	@JoinColumn(name = "acolyte_id")
 	private Acolyte acolyte;
 
-	public AccountAcolyteId getId() {
+	public UserAcolyteId getId() {
 		return id;
 	}
 
-	public void setId(AccountAcolyteId id) {
+	public void setId(UserAcolyteId id) {
 		this.id = id;
 	}
 
-	public Account getAccount() {
-		return account;
+	public User getUser() {
+		return user;
 	}
 
-	public void setAccount(Account account) {
-		this.account = account;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Acolyte getAcolyte() {

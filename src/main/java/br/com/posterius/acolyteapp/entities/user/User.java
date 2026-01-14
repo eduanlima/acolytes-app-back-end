@@ -1,4 +1,4 @@
-package br.com.posterius.acolyteapp.entities.account;
+package br.com.posterius.acolyteapp.entities.user;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,8 @@ import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "tb_account")
-public class Account {
+@Table(name = "tb_user")
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(nullable = false, updatable = false)
@@ -41,17 +41,17 @@ public class Account {
 	@NotNull
 	private Boolean isActivated;
 	private Integer role;
-	@OneToMany(mappedBy = "account")
-	private List<AccountAcolyte> accountAcolyte = new ArrayList<>();
+	@OneToMany(mappedBy = "user")
+	private List<UserAcolyte> accountAcolyte = new ArrayList<>();
 	
 	@Transient
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	public Account() {
+	public User() {
 	}
 	
-	public Account(UUID id, @NotNull String login, @NotNull String password, @NotNull Person person,
+	public User(UUID id, @NotNull String login, @NotNull String password, @NotNull Person person,
 			@NotNull Boolean isBlocked, @NotNull Boolean isActivated, Integer role) {
 		super();
 		this.id = id;
@@ -119,7 +119,7 @@ public class Account {
 		this.role = role;
 	}
 
-	public List<AccountAcolyte> getAccountAcolyte() {
+	public List<UserAcolyte> getAccountAcolyte() {
 		return accountAcolyte;
 	}
 	
@@ -144,7 +144,7 @@ public class Account {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Account other = (Account) obj;
+		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
 

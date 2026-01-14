@@ -1,9 +1,9 @@
 package br.com.posterius.acolyteapp.dto;
 import java.util.UUID;
 
-import br.com.posterius.acolyteapp.entities.account.Account;
+import br.com.posterius.acolyteapp.entities.user.User;
 
-public class AccountDTO {
+public class UserDTO {
 	private UUID id;
 	private String login;
 	private String password;
@@ -12,7 +12,7 @@ public class AccountDTO {
 	private String firstName;
 	private Integer role;
 	
-	public AccountDTO(Account entity) {
+	public UserDTO(User entity) {
 		this.id = entity.getId();
 		this.login = entity.getLogin();
 		this.password = entity.getPassword();
