@@ -12,7 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.com.posterius.acolyteapp.dto.AccountAcolyteResponseDTO;
 import br.com.posterius.acolyteapp.dto.AccountDTO;
-import br.com.posterius.acolyteapp.entities.Account;
+import br.com.posterius.acolyteapp.entities.account.Account;
 import br.com.posterius.acolyteapp.repositories.AccountRepository;
 
 @Service 

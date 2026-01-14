@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.posterius.acolyteapp.dto.PersonDTO;
-import br.com.posterius.acolyteapp.entities.Person;
+import br.com.posterius.acolyteapp.entities.person.Person;
 import br.com.posterius.acolyteapp.repositories.PersonRepository;
 
 @Service

@@ -1,5 +1,6 @@
-package br.com.posterius.acolyteapp.entities;
+package br.com.posterius.acolyteapp.entities.account;
 
+import br.com.posterius.acolyteapp.entities.acolyte.Acolyte;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -43,5 +44,5 @@ public class AccountAcolyte {
 
 	public void setAcolyte(Acolyte acolyte) {
 		this.acolyte = acolyte;
-	}
+	}	
 }

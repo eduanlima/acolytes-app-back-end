@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import br.com.posterius.acolyteapp.entities.Person;
+import br.com.posterius.acolyteapp.entities.person.Person;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, UUID> {
