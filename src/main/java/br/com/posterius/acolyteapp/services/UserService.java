@@ -35,6 +35,6 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public List<UserAcolyteResponseDTO> findAllAccountAcolyte(UUID id) {
 		User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		return user.getAccountAcolyte().stream().map(a -> new UserAcolyteResponseDTO(a.getAcolyte().getId(), a.getAcolyte().getPerson().getFirstName())).toList();
+		return user.getAccountAcolyte().stream().map(a -> new UserAcolyteResponseDTO(a.getAcolyte().getId(), a.getAcolyte().getFirstName())).toList();
 	}
 }
