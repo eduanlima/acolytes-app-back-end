@@ -16,7 +16,7 @@ public class AcolyteService {
 
 	public List<AcolyteResponseDTO> findAll() {
 		return acolyteRepository.findAll().stream()
-				.map(a -> new AcolyteResponseDTO(a.getId(), a.getFirstName(),
+				.map(a -> new AcolyteResponseDTO(a.getPerson().getId(), a.getPerson().getFirstName(),
 						a.getAcolytePositions().stream()
 								.map(p -> new AcolytePositionDTO(p.getPosition().getId(), p.getPosition().getCode(),
 										p.getPosition().getName(), p.getPosition().getDescription()))

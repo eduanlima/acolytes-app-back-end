@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.com.posterius.acolyteapp.dto.UserAcolyteResponseDTO;
-import br.com.posterius.acolyteapp.dto.UserDTO;
+import br.com.posterius.acolyteapp.dto.user.UserAcolyteResponseDTO;
+import br.com.posterius.acolyteapp.dto.user.UserDTO;
 import br.com.posterius.acolyteapp.entities.user.User;
 import br.com.posterius.acolyteapp.repositories.UserRepository;
 
@@ -35,6 +35,6 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public List<UserAcolyteResponseDTO> findAllAccountAcolyte(UUID id) {
 		User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		return user.getAccountAcolyte().stream().map(a -> new UserAcolyteResponseDTO(a.getAcolyte().getId(), a.getAcolyte().getFirstName())).toList();
+		return user.getUserAcolytes().stream().map(a -> new UserAcolyteResponseDTO(a.getAcolyte().getPerson().getId(), a.getAcolyte().getPerson().getFirstName())).toList();
 	}
 }

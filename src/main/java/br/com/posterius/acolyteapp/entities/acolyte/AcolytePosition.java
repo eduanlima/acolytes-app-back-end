@@ -15,11 +15,11 @@ public class AcolytePosition {
 	private AcolytePositionId id;
 	@ManyToOne
 	@MapsId("acolyteId")
-	@JoinColumn(name = "acolyte_id")
+	@JoinColumn(name = "acolyte_id", nullable = false)
 	private Acolyte acolyte;
 	@ManyToOne
 	@MapsId("positionId")
-	@JoinColumn(name = "position_id")
+	@JoinColumn(name = "position_id", nullable = false)
 	private Position position;
 	
 	public AcolytePosition() {

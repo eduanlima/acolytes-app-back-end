@@ -1,4 +1,4 @@
-package br.com.posterius.acolyteapp.dto;
+package br.com.posterius.acolyteapp.dto.user;
 import java.util.UUID;
 
 import br.com.posterius.acolyteapp.entities.user.User;
@@ -8,17 +8,14 @@ public class UserDTO {
 	private String login;
 	private String password;
 	private Boolean isBlocked;
-	private Boolean isActivated;
 	private String firstName;
 	private Integer role;
 	
 	public UserDTO(User entity) {
-		this.id = entity.getId();
+		this.id = entity.getPerson().getId();
 		this.login = entity.getLogin();
 		this.password = entity.getPassword();
 		this.isBlocked = entity.getIsBlocked();
-		this.isActivated = entity.getIsActivated();
-		this.firstName = entity.getPerson().getFirstName();
 		this.role = entity.getRole();
 	}
 
@@ -52,14 +49,6 @@ public class UserDTO {
 
 	public void setIsBlocked(Boolean isBlocked) {
 		this.isBlocked = isBlocked;
-	}
-
-	public Boolean getIsActivated() {
-		return isActivated;
-	}
-
-	public void setIsActivated(Boolean isActivated) {
-		this.isActivated = isActivated;
 	}
 
 	public String getFirstName() {
