@@ -37,7 +37,6 @@ public class Acolyte {
 	}
 	
 	public Acolyte(UUID id, @NotNull Person person) {
-		super();
 		this.id = id;
 		this.person = person;
 	}
@@ -52,5 +51,16 @@ public class Acolyte {
 
 	public List<AcolytePosition> getAcolytePositions() {
 		return acolytePositions;
+	}
+	
+	public static Acolyte createFor(Person person) {
+		Acolyte acolyte = new Acolyte();
+		acolyte.setPerson(person);
+		return acolyte;
+	}
+	
+	//Helpers/ delegates
+	public String getFirstName() {
+		return person.getFirstName();
 	}
 }
