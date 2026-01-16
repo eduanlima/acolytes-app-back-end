@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.posterius.acolyteapp.dto.PersonDTO;
+import br.com.posterius.acolyteapp.controller.person.PersonDTO;
 import br.com.posterius.acolyteapp.entities.person.Person;
 import br.com.posterius.acolyteapp.repositories.PersonRepository;
 

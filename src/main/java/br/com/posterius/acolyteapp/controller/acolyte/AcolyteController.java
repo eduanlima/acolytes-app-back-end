@@ -1,4 +1,4 @@
-package br.com.posterius.acolyteapp.controller;
+package br.com.posterius.acolyteapp.controller.acolyte;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.posterius.acolyteapp.dto.acolyte.AcolyteResponseDTO;
 import br.com.posterius.acolyteapp.services.AcolyteService;
 
 @RestController

@@ -1,4 +1,4 @@
-package br.com.posterius.acolyteapp.dto;
+package br.com.posterius.acolyteapp.controller.person;
 
 import java.sql.Timestamp;
 import java.util.UUID;

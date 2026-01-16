@@ -1,4 +1,4 @@
-package br.com.posterius.acolyteapp.controller;
+package br.com.posterius.acolyteapp.controller.user;
 
 import java.util.List;
 import java.util.UUID;
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.posterius.acolyteapp.dto.user.UserAcolyteResponseDTO;
-import br.com.posterius.acolyteapp.dto.user.UserDTO;
 import br.com.posterius.acolyteapp.services.UserService;
 
 @RestController	

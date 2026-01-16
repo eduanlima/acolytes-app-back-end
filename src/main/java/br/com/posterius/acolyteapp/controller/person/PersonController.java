@@ -1,4 +1,4 @@
-package br.com.posterius.acolyteapp.controller;
+package br.com.posterius.acolyteapp.controller.person;
 
 import java.net.URI;
 import java.util.List;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.posterius.acolyteapp.dto.PersonDTO;
 import br.com.posterius.acolyteapp.services.PersonService;
 
 @RestController

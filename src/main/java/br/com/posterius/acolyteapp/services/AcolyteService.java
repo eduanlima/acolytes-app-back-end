@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.posterius.acolyteapp.dto.acolyte.AcolytePositionDTO;
-import br.com.posterius.acolyteapp.dto.acolyte.AcolyteResponseDTO;
-import br.com.posterius.acolyteapp.repositories.AcolyteRepository;
+import br.com.posterius.acolyteapp.controller.acolyte.AcolyteResponseDTO;
+import br.com.posterius.acolyteapp.controller.position.PositionDTO;
+import br.com.posterius.acolyteapp.repositories.acolyte.AcolyteRepository;
 
 @Service
 public class AcolyteService {
@@ -18,7 +18,7 @@ public class AcolyteService {
 		return acolyteRepository.findAll().stream()
 				.map(a -> new AcolyteResponseDTO(a.getPerson().getId(), a.getPerson().getFirstName(),
 						a.getAcolytePositions().stream()
-								.map(p -> new AcolytePositionDTO(p.getPosition().getId(), p.getPosition().getCode(),
+								.map(p -> new PositionDTO(p.getPosition().getId(), p.getPosition().getCode(),
 										p.getPosition().getName(), p.getPosition().getDescription()))
 								.toList()))
 				.toList();

@@ -1,4 +1,4 @@
-package br.com.posterius.acolyteapp.repositories;
+package br.com.posterius.acolyteapp.repositories.acolyte;
 
 import java.util.UUID;
 
