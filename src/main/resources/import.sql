@@ -7,18 +7,19 @@ INSERT INTO tb_person (id, code, first_name, last_name, date_birth, is_activated
 --User
 INSERT INTO tb_user (id, login, password, is_blocked) VALUES ('50f0c341-ceb5-4aa9-971f-fb14337abd0c','test@test.com','12345678', false);
 INSERT INTO tb_user (id, login, password, is_blocked) VALUES ('21662e5e-c8b1-4a9d-a102-fcd600e9d425','test2@test.com','1234567890', false);
+INSERT INTO tb_user (id, login, password, is_blocked) VALUES ('76484b82-ce0c-4d3f-bcfa-46637ffcf508','test3@test.com','12345678901', false);
 
 --Acolyte
 INSERT INTO tb_acolyte (id) VALUES ('50f0c341-ceb5-4aa9-971f-fb14337abd0c');
 INSERT INTO tb_acolyte (id) VALUES ('dfd62ac7-a841-4074-af38-fef78c392377');
-INSERT INTO tb_acolyte (id) VALUES ('76484b82-ce0c-4d3f-bcfa-46637ffcf508');
+--INSERT INTO tb_acolyte (id) VALUES ('76484b82-ce0c-4d3f-bcfa-46637ffcf508');
 INSERT INTO tb_acolyte (id) VALUES ('21662e5e-c8b1-4a9d-a102-fcd600e9d425');
 INSERT INTO tb_acolyte (id) VALUES ('c0235ea5-b15b-443c-ab9b-4f44de7c498a');
 
 --User Acolyte
 INSERT INTO tb_user_acolyte (user_id, acolyte_id) VALUES ('50f0c341-ceb5-4aa9-971f-fb14337abd0c', '50f0c341-ceb5-4aa9-971f-fb14337abd0c');
 INSERT INTO tb_user_acolyte (user_id, acolyte_id) VALUES ('50f0c341-ceb5-4aa9-971f-fb14337abd0c', 'dfd62ac7-a841-4074-af38-fef78c392377');
-INSERT INTO tb_user_acolyte (user_id, acolyte_id) VALUES ('50f0c341-ceb5-4aa9-971f-fb14337abd0c', '76484b82-ce0c-4d3f-bcfa-46637ffcf508');
+--INSERT INTO tb_user_acolyte (user_id, acolyte_id) VALUES ('50f0c341-ceb5-4aa9-971f-fb14337abd0c', '76484b82-ce0c-4d3f-bcfa-46637ffcf508');
 INSERT INTO tb_user_acolyte (user_id, acolyte_id) VALUES ('50f0c341-ceb5-4aa9-971f-fb14337abd0c', '21662e5e-c8b1-4a9d-a102-fcd600e9d425');
 INSERT INTO tb_user_acolyte (user_id, acolyte_id) VALUES ('50f0c341-ceb5-4aa9-971f-fb14337abd0c', 'c0235ea5-b15b-443c-ab9b-4f44de7c498a');
 INSERT INTO tb_user_acolyte (user_id, acolyte_id) VALUES ('21662e5e-c8b1-4a9d-a102-fcd600e9d425', '21662e5e-c8b1-4a9d-a102-fcd600e9d425');

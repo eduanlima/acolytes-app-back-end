@@ -12,7 +12,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_user_acolyte")
 public class UserAcolyte {
-
     @EmbeddedId
     private UserAcolyteId id;
 
@@ -31,6 +30,11 @@ public class UserAcolyte {
 
     public UserAcolyte(UserAcolyteId id, User user, Acolyte acolyte) {
 		this.id = id;
+		this.user = user;
+		this.acolyte = acolyte;
+	}
+    
+	public UserAcolyte(User user, Acolyte acolyte) {
 		this.user = user;
 		this.acolyte = acolyte;
 	}

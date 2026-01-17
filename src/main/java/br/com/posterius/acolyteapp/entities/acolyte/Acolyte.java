@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 
 import br.com.posterius.acolyteapp.entities.person.Person;
+import br.com.posterius.acolyteapp.entities.position.Position;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,23 +24,36 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "tb_acolyte")
 public class Acolyte {
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(nullable = false, updatable = false)
 	private UUID id;
 	@NotNull
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@MapsId
 	@JoinColumn(name = "id")
 	private Person person;
-	@OneToMany(mappedBy = "acolyte")
+	@OneToMany(mappedBy = "acolyte", cascade = CascadeType.ALL)
 	private List<AcolytePosition> acolytePositions = new ArrayList<>();
 	
 	public Acolyte() {
 	}
 	
+	public Acolyte(@NotNull Person person, List<AcolytePosition> acolytePositions) {
+		super();
+		this.person = person;
+		this.acolytePositions = acolytePositions;
+	}
+
 	public Acolyte(UUID id, @NotNull Person person) {
 		this.id = id;
 		this.person = person;
+	}
+	
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
 	}
 
 	public Person getPerson() {
@@ -62,5 +77,10 @@ public class Acolyte {
 	//Helpers/ delegates
 	public String getFirstName() {
 		return person.getFirstName();
+	}
+	
+	public void addPosition(Position position) {
+		AcolytePosition acolytePosition = new AcolytePosition(this, position);
+		this.acolytePositions.add(acolytePosition);
 	}
 }

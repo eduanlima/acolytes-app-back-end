@@ -10,10 +10,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.com.posterius.acolyteapp.controller.acolyte.AcolytePositionRequestDTO;
+import br.com.posterius.acolyteapp.controller.acolyte.AcolyteRequestDTO;
 import br.com.posterius.acolyteapp.controller.user.UserAcolyteResponseDTO;
 import br.com.posterius.acolyteapp.controller.user.UserDTO;
+import br.com.posterius.acolyteapp.entities.acolyte.Acolyte;
+import br.com.posterius.acolyteapp.entities.acolyte.AcolytePosition;
+import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionId;
+import br.com.posterius.acolyteapp.entities.person.Person;
+import br.com.posterius.acolyteapp.entities.position.Position;
 import br.com.posterius.acolyteapp.entities.user.User;
+import br.com.posterius.acolyteapp.entities.user.UserAcolyte;
+import br.com.posterius.acolyteapp.entities.user.UserAcolyteId;
 import br.com.posterius.acolyteapp.repositories.UserRepository;
 import br.com.posterius.acolyteapp.repositories.acolyte.AcolytePositionRepository;
 import br.com.posterius.acolyteapp.repositories.acolyte.AcolyteRepository;
@@ -25,10 +32,10 @@ public class UserService {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private AcolyteRepository acolyteRepository;
+	private PositionRepository positionRepository;
 	
 	@Autowired
-	private PositionRepository positionRepository;
+	private AcolyteRepository acolyteRepository;
 	
 	@Autowired
 	private AcolytePositionRepository acolytePositionRepository;
@@ -51,7 +58,32 @@ public class UserService {
 		return user.getUserAcolytes().stream().map(a -> new UserAcolyteResponseDTO(a.getAcolyte().getPerson().getId(), a.getAcolyte().getPerson().getFirstName())).toList();
 	}
 	
-	public void createAcolyteByUser(UUID userId, AcolytePositionRequestDTO acolyteDto) {
+	@Transactional
+	public void createAcolyteByUser(UUID userId, AcolyteRequestDTO acolyteDto) {
+		User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		Person person = user.getPerson();
 		
+		List<Position> positions = positionRepository.findAllByIdIn(acolyteDto.positionsId().stream().map(p -> p.positionId()).toList());
+		Acolyte acolyte = new Acolyte();
+		acolyte.setPerson(person);
+		acolyte = acolyteRepository.saveAndFlush(acolyte);
+		
+		for (Position position: positions) {
+			AcolytePositionId acolytePositionId = new AcolytePositionId(person.getId(), position.getId());
+			AcolytePosition acolytePosition = new AcolytePosition();
+			acolytePosition.setId(acolytePositionId);
+			acolytePosition.setAcolyte(acolyte);
+			acolytePosition.setPosition(position);
+			
+	        acolyte.getAcolytePositions().add(acolytePosition);
+		}
+		
+		acolyte = acolyteRepository.save(acolyte);
+		
+		UserAcolyteId userAcolyteId = new UserAcolyteId(user.getId(), acolyte.getId());
+		UserAcolyte userAcolyte = new UserAcolyte(userAcolyteId, user, acolyte);
+		
+		user.getUserAcolytes().add(userAcolyte);
+		userRepository.save(user);
 	}
 }

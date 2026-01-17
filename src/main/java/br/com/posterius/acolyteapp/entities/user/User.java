@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import br.com.posterius.acolyteapp.entities.person.Person;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,7 +23,6 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "tb_user")
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(nullable = false, updatable = false)
 	private UUID id;
 	@NotNull
@@ -33,11 +33,11 @@ public class User {
 	private Boolean isBlocked;
 	private Integer role;
 	@NotNull
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@MapsId
 	@JoinColumn(name = "id")
 	private Person person;
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserAcolyte> userAcolytes = new ArrayList<>();
 	
 	public User() {

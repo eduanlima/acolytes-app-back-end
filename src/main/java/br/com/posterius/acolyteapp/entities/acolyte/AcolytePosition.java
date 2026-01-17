@@ -24,6 +24,11 @@ public class AcolytePosition {
 	
 	public AcolytePosition() {
 	}
+	
+	public AcolytePosition(Acolyte acolyte, Position position) {
+		this.acolyte = acolyte;
+		this.position = position;
+	}
 
 	public AcolytePositionId getId() {
 		return id;

@@ -1,15 +1,15 @@
 package br.com.posterius.acolyteapp.entities.acolyte;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public class AcolytePositionId {
-	@Column(name = "acolyte_id")
+public class AcolytePositionId implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private UUID acolyteId;
-	@Column(name = "position_id")
 	private UUID positionId;
 	
 	public AcolytePositionId() {
