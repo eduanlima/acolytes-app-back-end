@@ -3,6 +3,7 @@ package br.com.posterius.acolyteapp.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,9 +78,16 @@ public class AcolyteService {
 		return acolyte;
 	}
 	
-	public AcolyteResponseDTO saveAcolyte(AcolyteRequestDTO acolyteDto) {
+	public AcolyteResponseDTO createAcolyte(AcolyteRequestDTO acolyteDto) {
 		User user = userService.validateUser(acolyteDto.creatorId());
 		Acolyte acolyte = saveAcolyte(user, acolyteDto);
+		AcolyteResponseDTO acolyteResponseDTO = new AcolyteResponseDTO(acolyte.getId(), new PersonRequestDTO(acolyte.getPerson()), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList());
+		return acolyteResponseDTO;
+	}
+	
+	public AcolyteResponseDTO updateAcolyte(UUID acolyteId, AcolyteRequestDTO acolyteDto) {
+		User user = userService.validateUser(acolyteDto.creatorId());
+		Acolyte acolyte = saveAcolyte(user, new AcolyteRequestDTO(acolyteId, acolyteDto));
 		AcolyteResponseDTO acolyteResponseDTO = new AcolyteResponseDTO(acolyte.getId(), new PersonRequestDTO(acolyte.getPerson()), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList());
 		return acolyteResponseDTO;
 	}
