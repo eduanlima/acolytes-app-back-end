@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import br.com.posterius.acolyteapp.entities.person.Person;
+import br.com.posterius.acolyteapp.entities.person.PersonEntity;
 import br.com.posterius.acolyteapp.entities.position.Position;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,20 +30,20 @@ public class Acolyte {
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@MapsId
 	@JoinColumn(name = "id")
-	private Person person;
+	private PersonEntity person;
 	@OneToMany(mappedBy = "acolyte", cascade = CascadeType.ALL)
 	private List<AcolytePosition> acolytePositions = new ArrayList<>();
 	
 	public Acolyte() {
 	}
 	
-	public Acolyte(@NotNull Person person, List<AcolytePosition> acolytePositions) {
+	public Acolyte(@NotNull PersonEntity person, List<AcolytePosition> acolytePositions) {
 		super();
 		this.person = person;
 		this.acolytePositions = acolytePositions;
 	}
 
-	public Acolyte(UUID id, @NotNull Person person) {
+	public Acolyte(UUID id, @NotNull PersonEntity person) {
 		this.id = id;
 		this.person = person;
 	}
@@ -56,11 +56,11 @@ public class Acolyte {
 		this.id = id;
 	}
 
-	public Person getPerson() {
+	public PersonEntity getPerson() {
 		return person;
 	}
 
-	public void setPerson(Person person) {
+	public void setPerson(PersonEntity person) {
 		this.person = person;
 	}
 
@@ -68,7 +68,11 @@ public class Acolyte {
 		return acolytePositions;
 	}
 	
-	public static Acolyte createFor(Person person) {
+	public void setAcolytePositions(List<AcolytePosition> acolytePositions) {
+		this.acolytePositions = acolytePositions;
+	}
+
+	public static Acolyte createFor(PersonEntity person) {
 		Acolyte acolyte = new Acolyte();
 		acolyte.setPerson(person);
 		return acolyte;

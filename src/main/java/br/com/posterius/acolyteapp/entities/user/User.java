@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import br.com.posterius.acolyteapp.entities.person.Person;
+import br.com.posterius.acolyteapp.entities.person.PersonEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,7 +36,7 @@ public class User {
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@MapsId
 	@JoinColumn(name = "id")
-	private Person person;
+	private PersonEntity person;
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserAcolyte> userAcolytes = new ArrayList<>();
 	
@@ -44,7 +44,7 @@ public class User {
 	}
 
 	public User(UUID id, @NotNull String login, @NotNull String password, @NotNull Boolean isBlocked, Integer role,
-			@NotNull Person person, List<UserAcolyte> userAcolytes) {
+			@NotNull PersonEntity person, List<UserAcolyte> userAcolytes) {
 		super();
 		this.id = id;
 		this.login = login;
@@ -95,11 +95,11 @@ public class User {
 		this.role = role;
 	}
 
-	public Person getPerson() {
+	public PersonEntity getPerson() {
 		return person;
 	}
 
-	public void setPerson(Person person) {
+	public void setPerson(PersonEntity person) {
 		this.person = person;
 	}
 

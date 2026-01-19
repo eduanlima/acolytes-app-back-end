@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 
-import br.com.posterius.acolyteapp.entities.person.Person;
+import br.com.posterius.acolyteapp.entities.person.PersonEntity;
 
 public class PersonDTO {
 	private UUID id;
@@ -15,7 +15,7 @@ public class PersonDTO {
 	private Timestamp dateBirth;
 	private Boolean isActivated;
 	
-	public PersonDTO(Person entity) {
+	public PersonDTO(PersonEntity entity) {
 		BeanUtils.copyProperties(entity, this);
 	}
 

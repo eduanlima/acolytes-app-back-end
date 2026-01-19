@@ -15,7 +15,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_person")
-public class Person {
+public class PersonEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(nullable = false, updatable = false)
@@ -33,10 +33,10 @@ public class Person {
 	@NotNull
 	private Boolean isActivated;
 	
-	public Person() {
+	public PersonEntity() {
 	}
 
-	public Person(UUID id, @NotNull Integer code, @NotNull @NotBlank String firstName,
+	public PersonEntity(UUID id, @NotNull Integer code, @NotNull @NotBlank String firstName,
 			@NotNull @NotBlank String lastName, @NotNull Timestamp dateBirth, @NotNull Boolean isActivated) {
 		this.id = id;
 		this.code = code;
@@ -45,7 +45,7 @@ public class Person {
 		this.dateBirth = dateBirth;
 		this.isActivated = isActivated;
 	}
-
+	
 	public UUID getId() {
 		return id;
 	}
@@ -107,7 +107,7 @@ public class Person {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Person other = (Person) obj;
+		PersonEntity other = (PersonEntity) obj;
 		return Objects.equals(id, other.id);
 	}
 }

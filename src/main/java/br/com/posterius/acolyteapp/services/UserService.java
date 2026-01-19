@@ -16,13 +16,12 @@ import br.com.posterius.acolyteapp.controller.user.UserDTO;
 import br.com.posterius.acolyteapp.entities.acolyte.Acolyte;
 import br.com.posterius.acolyteapp.entities.acolyte.AcolytePosition;
 import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionId;
-import br.com.posterius.acolyteapp.entities.person.Person;
+import br.com.posterius.acolyteapp.entities.person.PersonEntity;
 import br.com.posterius.acolyteapp.entities.position.Position;
 import br.com.posterius.acolyteapp.entities.user.User;
 import br.com.posterius.acolyteapp.entities.user.UserAcolyte;
 import br.com.posterius.acolyteapp.entities.user.UserAcolyteId;
 import br.com.posterius.acolyteapp.repositories.UserRepository;
-import br.com.posterius.acolyteapp.repositories.acolyte.AcolytePositionRepository;
 import br.com.posterius.acolyteapp.repositories.acolyte.AcolyteRepository;
 import br.com.posterius.acolyteapp.repositories.position.PositionRepository;
 
@@ -37,8 +36,9 @@ public class UserService {
 	@Autowired
 	private AcolyteRepository acolyteRepository;
 	
-	@Autowired
-	private AcolytePositionRepository acolytePositionRepository;
+	public User validateUser(UUID userId) {
+		return userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+	}
 	
 	@Transactional(readOnly = true)
 	public List<UserDTO> findAll() {
@@ -60,8 +60,8 @@ public class UserService {
 	
 	@Transactional
 	public void createAcolyteByUser(UUID userId, AcolyteRequestDTO acolyteDto) {
-		User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		Person person = user.getPerson();
+		User user = validateUser(userId);
+		PersonEntity person = user.getPerson();
 		
 		List<Position> positions = positionRepository.findAllByIdIn(acolyteDto.positionsId().stream().map(p -> p.positionId()).toList());
 		Acolyte acolyte = new Acolyte();
