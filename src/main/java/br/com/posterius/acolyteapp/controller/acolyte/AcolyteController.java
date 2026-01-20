@@ -23,27 +23,27 @@ public class AcolyteController {
 	private AcolyteService acolyteService;
 	
 	@GetMapping
-	public ResponseEntity<List<AcolyteResponseDTO>> findAll() {
+	public ResponseEntity<List<AcolyteDTO>> findAll() {
 		var acolytes = acolyteService.findAll();
 		return ResponseEntity.ok(acolytes);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<AcolyteResponseDTO> findById(@PathVariable UUID id) {
-		AcolyteResponseDTO acolyteResponseDTO = acolyteService.findById(id);
-		return ResponseEntity.ok(acolyteResponseDTO);
+	public ResponseEntity<AcolyteDTO> findById(@PathVariable UUID id) {
+		AcolyteDTO acolyteDTO = acolyteService.findById(id);
+		return ResponseEntity.ok(acolyteDTO);
 	}
 	
 	@PostMapping
-	public ResponseEntity<AcolyteResponseDTO> saveAcolyte(@RequestBody AcolyteRequestDTO acolyteDto){
-		AcolyteResponseDTO acolyteResponseDTO = acolyteService.create(acolyteDto);
-		return ResponseEntity.ok(acolyteResponseDTO);
+	public ResponseEntity<AcolyteDTO> saveAcolyte(@RequestBody AcolyteDTO acolyteDto){
+		acolyteDto = acolyteService.create(acolyteDto);
+		return ResponseEntity.ok(acolyteDto);
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<AcolyteResponseDTO> update(@PathVariable UUID id,@RequestBody AcolyteRequestDTO acolyteDto) {
-		AcolyteResponseDTO acolyteResponseDTO = acolyteService.update(id, acolyteDto);
-		return ResponseEntity.ok(acolyteResponseDTO);
+	public ResponseEntity<AcolyteDTO> update(@PathVariable UUID id,@RequestBody AcolyteDTO acolyteDto) {
+		acolyteDto = acolyteService.update(id, acolyteDto);
+		return ResponseEntity.ok(acolyteDto);
 	}
 	
 	@DeleteMapping(value = "/{id}")

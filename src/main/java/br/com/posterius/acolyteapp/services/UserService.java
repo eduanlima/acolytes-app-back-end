@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.com.posterius.acolyteapp.controller.acolyte.AcolyteRequestDTO;
+import br.com.posterius.acolyteapp.controller.acolyte.AcolyteDTO;
 import br.com.posterius.acolyteapp.controller.user.UserAcolyteResponseDTO;
 import br.com.posterius.acolyteapp.controller.user.UserDTO;
 import br.com.posterius.acolyteapp.entities.acolyte.Acolyte;
@@ -59,11 +59,11 @@ public class UserService {
 	}
 	
 	@Transactional
-	public void createAcolyteByUser(UUID userId, AcolyteRequestDTO acolyteDto) {
+	public void createAcolyteByUser(UUID userId, AcolyteDTO acolyteDto) {
 		User user = validateUser(userId);
 		PersonEntity person = user.getPerson();
 		
-		List<Position> positions = positionRepository.findAllByIdIn(acolyteDto.positionsId().stream().map(p -> p.positionId()).toList());
+		List<Position> positions = positionRepository.findAllByIdIn(acolyteDto.positions().stream().map(p -> p.id()).toList());
 		Acolyte acolyte = new Acolyte();
 		acolyte.setPerson(person);
 		acolyte = acolyteRepository.saveAndFlush(acolyte);

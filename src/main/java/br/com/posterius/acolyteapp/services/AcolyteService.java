@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.com.posterius.acolyteapp.controller.acolyte.AcolyteRequestDTO;
-import br.com.posterius.acolyteapp.controller.acolyte.AcolyteResponseDTO;
+import br.com.posterius.acolyteapp.controller.acolyte.AcolyteDTO;
 import br.com.posterius.acolyteapp.controller.person.PersonRequestDTO;
 import br.com.posterius.acolyteapp.controller.position.PositionDTO;
 import br.com.posterius.acolyteapp.entities.acolyte.Acolyte;
@@ -42,44 +41,43 @@ public class AcolyteService {
 		return acolyteRepository.findById(acolyteId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 	}
 	
-	public List<AcolyteResponseDTO> findAll() {
+	public List<AcolyteDTO> findAll() {
 		return acolyteRepository.findAllNotDeleted().stream()
-				.map(a -> new AcolyteResponseDTO(a.getId(), new PersonRequestDTO(a.getPerson()),
+				.map(a -> new AcolyteDTO(a.getId(),
 						a.getAcolytePositions().stream()
-								.map(p -> new PositionDTO(p.getPosition().getId(), p.getPosition().getCode(),
-										p.getPosition().getName(), p.getPosition().getDescription()))
-								.toList()))
+								.map(p -> new PositionDTO(p.getPosition()))
+								.toList(), new PersonRequestDTO(a.getPerson()), null))
 				.toList();
 	}
 	
-	public AcolyteResponseDTO findById(UUID acolyteId) {
+	public AcolyteDTO findById(UUID acolyteId) {
 		Acolyte acolyte = acolyteRepository.findById(acolyteId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		
 		if (acolyte.getPerson().getDeleted())
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		
-		AcolyteResponseDTO acolyteResponseDTO = new AcolyteResponseDTO(acolyte.getId(), new PersonRequestDTO(acolyte.getPerson()), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList());
-		return acolyteResponseDTO;
+		AcolyteDTO acolyteDTO = new AcolyteDTO(acolyte.getId(), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList(), new PersonRequestDTO(acolyte.getPerson()), null);
+		return acolyteDTO;
 	}
 	
 	@Transactional
-	private Acolyte save(User user, AcolyteRequestDTO acolyteDto) {
+	private Acolyte save(User user, AcolyteDTO acolyteDto) {
 		Acolyte acolyte = new Acolyte();
 		
-		if (acolyteDto.acolyteId() != null) {
-			Optional<Acolyte> optionalAcolyte = acolyteRepository.findById(acolyteDto.acolyteId());
+		if (acolyteDto.id() != null) {
+			Optional<Acolyte> optionalAcolyte = acolyteRepository.findById(acolyteDto.id());
 			acolyte = optionalAcolyte != null ? optionalAcolyte.get() : acolyte;
 		}
 		
 		if (acolyte.getId() != null)
 			acolyte.setAcolytePositions(new ArrayList<>());
 
-		PersonEntity person = personService.save(acolyteDto.personDto());
+		PersonEntity person = personService.save(acolyteDto.person());
 		acolyte.setPerson(person);
 		
 		acolyte = acolyteRepository.saveAndFlush(acolyte);
 		
-		List<Position> positions = positionRepository.findAllByIdIn(acolyteDto.positionsId().stream().map(p -> p.positionId()).toList());
+		List<Position> positions = positionRepository.findAllByIdIn(acolyteDto.positions().stream().map(p -> p.id()).toList());
 		
 		for (Position position: positions) {
 			AcolytePositionId acolytePositionId = new AcolytePositionId(person.getId(), position.getId());
@@ -94,19 +92,19 @@ public class AcolyteService {
 		return acolyte;
 	}
 	
-	public AcolyteResponseDTO save(AcolyteRequestDTO acolyteDto) {
+	public AcolyteDTO save(AcolyteDTO acolyteDto) {
 		User user = userService.validateUser(acolyteDto.creatorId());		
 		Acolyte acolyte = save(user, acolyteDto);
-		AcolyteResponseDTO acolyteResponseDTO = new AcolyteResponseDTO(acolyte.getId(), new PersonRequestDTO(acolyte.getPerson()), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList());
-		return acolyteResponseDTO;
+		acolyteDto = new AcolyteDTO(acolyte.getId(), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList(), new PersonRequestDTO(acolyte.getPerson()), null);
+		return acolyteDto;
 	}
 	
-	public AcolyteResponseDTO create(AcolyteRequestDTO acolyteDto) {
+	public AcolyteDTO create(AcolyteDTO acolyteDto) {
 		return save(acolyteDto);
 	}
 	
-	public AcolyteResponseDTO update(UUID acolyteId, AcolyteRequestDTO acolyteDto) {
-		return save(new AcolyteRequestDTO(acolyteId, acolyteDto));
+	public AcolyteDTO update(UUID acolyteId, AcolyteDTO acolyteDto) {
+		return save(new AcolyteDTO(acolyteId, acolyteDto));
 	}
 	
 	public void delete(UUID acolyteId) {

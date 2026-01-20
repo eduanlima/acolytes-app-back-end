@@ -32,7 +32,7 @@ public class PersonService {
 	
 	@Transactional(readOnly = true)
 	public PersonDTO findById(UUID id) {
-		Optional<PersonEntity> optional = personRepository.findById(id);
+		Optional<PersonEntity> optional = personRepository.findByIdAndDeletedFalse(id);
 		PersonEntity entity = optional.get();
 		return new PersonDTO(entity);
 	} 
