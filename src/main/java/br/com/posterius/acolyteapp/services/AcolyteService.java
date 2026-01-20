@@ -38,6 +38,10 @@ public class AcolyteService {
 	@Autowired
 	private PersonService personService;
 	
+	public Acolyte validateAcolyte(UUID acolyteId) {
+		return acolyteRepository.findById(acolyteId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+	}
+	
 	public List<AcolyteResponseDTO> findAll() {
 		return acolyteRepository.findAllNotDeleted().stream()
 				.map(a -> new AcolyteResponseDTO(a.getId(), new PersonRequestDTO(a.getPerson()),
@@ -102,5 +106,10 @@ public class AcolyteService {
 		Acolyte acolyte = saveAcolyte(user, new AcolyteRequestDTO(acolyteId, acolyteDto));
 		AcolyteResponseDTO acolyteResponseDTO = new AcolyteResponseDTO(acolyte.getId(), new PersonRequestDTO(acolyte.getPerson()), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList());
 		return acolyteResponseDTO;
+	}
+	
+	public void delete(UUID acolyteId) {
+		Acolyte acolyte = validateAcolyte(acolyteId);
+		personService.delete(acolyte.getPerson().getId());
 	}
 }
