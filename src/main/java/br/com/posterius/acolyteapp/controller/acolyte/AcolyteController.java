@@ -36,13 +36,13 @@ public class AcolyteController {
 	
 	@PostMapping
 	public ResponseEntity<AcolyteResponseDTO> saveAcolyte(@RequestBody AcolyteRequestDTO acolyteDto){
-		AcolyteResponseDTO acolyteResponseDTO = acolyteService.createAcolyte(acolyteDto);
+		AcolyteResponseDTO acolyteResponseDTO = acolyteService.create(acolyteDto);
 		return ResponseEntity.ok(acolyteResponseDTO);
 	}
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<AcolyteResponseDTO> update(@PathVariable UUID id,@RequestBody AcolyteRequestDTO acolyteDto) {
-		AcolyteResponseDTO acolyteResponseDTO = acolyteService.updateAcolyte(id, acolyteDto);
+		AcolyteResponseDTO acolyteResponseDTO = acolyteService.update(id, acolyteDto);
 		return ResponseEntity.ok(acolyteResponseDTO);
 	}
 	

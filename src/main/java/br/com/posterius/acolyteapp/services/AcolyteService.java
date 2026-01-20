@@ -63,7 +63,7 @@ public class AcolyteService {
 	}
 	
 	@Transactional
-	private Acolyte saveAcolyte(User user, AcolyteRequestDTO acolyteDto) {
+	private Acolyte save(User user, AcolyteRequestDTO acolyteDto) {
 		Acolyte acolyte = new Acolyte();
 		
 		if (acolyteDto.acolyteId() != null) {
@@ -94,18 +94,19 @@ public class AcolyteService {
 		return acolyte;
 	}
 	
-	public AcolyteResponseDTO createAcolyte(AcolyteRequestDTO acolyteDto) {
-		User user = userService.validateUser(acolyteDto.creatorId());
-		Acolyte acolyte = saveAcolyte(user, acolyteDto);
+	public AcolyteResponseDTO save(AcolyteRequestDTO acolyteDto) {
+		User user = userService.validateUser(acolyteDto.creatorId());		
+		Acolyte acolyte = save(user, acolyteDto);
 		AcolyteResponseDTO acolyteResponseDTO = new AcolyteResponseDTO(acolyte.getId(), new PersonRequestDTO(acolyte.getPerson()), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList());
 		return acolyteResponseDTO;
 	}
 	
-	public AcolyteResponseDTO updateAcolyte(UUID acolyteId, AcolyteRequestDTO acolyteDto) {
-		User user = userService.validateUser(acolyteDto.creatorId());
-		Acolyte acolyte = saveAcolyte(user, new AcolyteRequestDTO(acolyteId, acolyteDto));
-		AcolyteResponseDTO acolyteResponseDTO = new AcolyteResponseDTO(acolyte.getId(), new PersonRequestDTO(acolyte.getPerson()), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList());
-		return acolyteResponseDTO;
+	public AcolyteResponseDTO create(AcolyteRequestDTO acolyteDto) {
+		return save(acolyteDto);
+	}
+	
+	public AcolyteResponseDTO update(UUID acolyteId, AcolyteRequestDTO acolyteDto) {
+		return save(new AcolyteRequestDTO(acolyteId, acolyteDto));
 	}
 	
 	public void delete(UUID acolyteId) {
