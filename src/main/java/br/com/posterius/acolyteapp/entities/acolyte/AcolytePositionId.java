@@ -3,7 +3,6 @@ package br.com.posterius.acolyteapp.entities.acolyte;
 import java.io.Serializable;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
