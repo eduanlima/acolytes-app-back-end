@@ -1,6 +1,6 @@
 package br.com.posterius.acolyteapp.entities.acolyte;
 
-import br.com.posterius.acolyteapp.entities.position.Position;
+import br.com.posterius.acolyteapp.entities.position.PositionEntity;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -20,12 +20,12 @@ public class AcolytePositionEntity {
 	@ManyToOne
 	@MapsId("positionId")
 	@JoinColumn(name = "position_id", nullable = false)
-	private Position position;
+	private PositionEntity position;
 	
 	public AcolytePositionEntity() {
 	}
 	
-	public AcolytePositionEntity(AcolyteEntity acolyte, Position position) {
+	public AcolytePositionEntity(AcolyteEntity acolyte, PositionEntity position) {
 		this.acolyte = acolyte;
 		this.position = position;
 	}
@@ -46,11 +46,11 @@ public class AcolytePositionEntity {
 		this.acolyte = acolyte;
 	}
 
-	public Position getPosition() {
+	public PositionEntity getPosition() {
 		return position;
 	}
 
-	public void setPosition(Position position) {
+	public void setPosition(PositionEntity position) {
 		this.position = position;
 	}
 }

@@ -17,13 +17,13 @@ import br.com.posterius.acolyteapp.entities.acolyte.AcolyteEntity;
 import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionEntity;
 import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionId;
 import br.com.posterius.acolyteapp.entities.person.PersonEntity;
-import br.com.posterius.acolyteapp.entities.position.Position;
-import br.com.posterius.acolyteapp.entities.user.User;
+import br.com.posterius.acolyteapp.entities.position.PositionEntity;
+import br.com.posterius.acolyteapp.entities.user.UserEntity;
 import br.com.posterius.acolyteapp.entities.user.UserAcolyte;
 import br.com.posterius.acolyteapp.entities.user.UserAcolyteId;
-import br.com.posterius.acolyteapp.repositories.UserRepository;
 import br.com.posterius.acolyteapp.repositories.acolyte.AcolyteRepository;
 import br.com.posterius.acolyteapp.repositories.position.PositionRepository;
+import br.com.posterius.acolyteapp.repositories.user.UserRepository;
 
 @Service 
 public class UserService {
@@ -39,11 +39,11 @@ public class UserService {
 	@Autowired
 	private PersonService personService;
 	
-	public User validateUser(UUID userId) {
+	public UserEntity validateUser(UUID userId) {
 		return userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 	}
 	
-	private void copyRecordToEntity(UserDTO userDTO, User user) {
+	private void copyRecordToEntity(UserDTO userDTO, UserEntity user) {
 		user.setLogin(userDTO.login());
 		user.setPassword(userDTO.password());
 		user.setIsBlocked(userDTO.isBlocked());
@@ -57,22 +57,22 @@ public class UserService {
 	
 	@Transactional(readOnly = true)
 	public UserDTO findById(UUID id) {
-		Optional<User> optional = userRepository.findById(id);
-		User entity = optional.get();
+		Optional<UserEntity> optional = userRepository.findById(id);
+		UserEntity entity = optional.get();
 		return new UserDTO(entity);
 	}
 	
 	@Transactional(readOnly = true)
 	public List<UserAcolyteResponseDTO> findAllAccountAcolyte(UUID id) {
-		User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		UserEntity user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		return user.getUserAcolytes().stream().map(a -> new UserAcolyteResponseDTO(a.getAcolyte().getPerson().getId(), a.getAcolyte().getPerson().getFirstName())).toList();
 	}
 	
-	private User save(UserDTO userDto) {
-		User user = new User();
+	private UserEntity save(UserDTO userDto) {
+		UserEntity user = new UserEntity();
 		
 		if (userDto.id() != null) {
-			Optional<User> optionalUser = userRepository.findById(userDto.id());
+			Optional<UserEntity> optionalUser = userRepository.findById(userDto.id());
 			user = optionalUser != null ? optionalUser.get() : user;
 		}
 
@@ -94,15 +94,15 @@ public class UserService {
 	
 	@Transactional
 	public void createAcolyteByUser(UUID userId, AcolyteDTO acolyteDto) {
-		User user = validateUser(userId);
+		UserEntity user = validateUser(userId);
 		PersonEntity person = user.getPerson();
 		
-		List<Position> positions = positionRepository.findAllByIdIn(acolyteDto.positions().stream().map(p -> p.id()).toList());
+		List<PositionEntity> positions = positionRepository.findAllByIdIn(acolyteDto.positions().stream().map(p -> p.id()).toList());
 		AcolyteEntity acolyte = new AcolyteEntity();
 		acolyte.setPerson(person);
 		acolyte = acolyteRepository.saveAndFlush(acolyte);
 		
-		for (Position position: positions) {
+		for (PositionEntity position: positions) {
 			AcolytePositionId acolytePositionId = new AcolytePositionId(person.getId(), position.getId());
 			AcolytePositionEntity acolytePosition = new AcolytePositionEntity();
 			acolytePosition.setId(acolytePositionId);

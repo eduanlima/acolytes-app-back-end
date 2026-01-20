@@ -18,8 +18,8 @@ import br.com.posterius.acolyteapp.entities.acolyte.AcolyteEntity;
 import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionEntity;
 import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionId;
 import br.com.posterius.acolyteapp.entities.person.PersonEntity;
-import br.com.posterius.acolyteapp.entities.position.Position;
-import br.com.posterius.acolyteapp.entities.user.User;
+import br.com.posterius.acolyteapp.entities.position.PositionEntity;
+import br.com.posterius.acolyteapp.entities.user.UserEntity;
 import br.com.posterius.acolyteapp.repositories.acolyte.AcolyteRepository;
 import br.com.posterius.acolyteapp.repositories.position.PositionRepository;
 
@@ -61,7 +61,7 @@ public class AcolyteService {
 	}
 	
 	@Transactional
-	private AcolyteEntity save(User user, AcolyteDTO acolyteDto) {
+	private AcolyteEntity save(UserEntity user, AcolyteDTO acolyteDto) {
 		AcolyteEntity acolyte = new AcolyteEntity();
 		
 		if (acolyteDto.id() != null) {
@@ -77,9 +77,9 @@ public class AcolyteService {
 		
 		acolyte = acolyteRepository.saveAndFlush(acolyte);
 		
-		List<Position> positions = positionRepository.findAllByIdIn(acolyteDto.positions().stream().map(p -> p.id()).toList());
+		List<PositionEntity> positions = positionRepository.findAllByIdIn(acolyteDto.positions().stream().map(p -> p.id()).toList());
 		
-		for (Position position: positions) {
+		for (PositionEntity position: positions) {
 			AcolytePositionId acolytePositionId = new AcolytePositionId(person.getId(), position.getId());
 			AcolytePositionEntity acolytePosition = new AcolytePositionEntity();
 			acolytePosition.setId(acolytePositionId);
@@ -93,7 +93,7 @@ public class AcolyteService {
 	}
 	
 	public AcolyteDTO save(AcolyteDTO acolyteDto) {
-		User user = userService.validateUser(acolyteDto.creatorId());		
+		UserEntity user = userService.validateUser(acolyteDto.creatorId());		
 		AcolyteEntity acolyte = save(user, acolyteDto);
 		acolyteDto = new AcolyteDTO(acolyte.getId(), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList(), new PersonDTO(acolyte.getPerson()), null);
 		return acolyteDto;

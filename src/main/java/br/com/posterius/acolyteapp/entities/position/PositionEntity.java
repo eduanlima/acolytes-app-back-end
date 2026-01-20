@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_position")
-public class Position {
+public class PositionEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(nullable = false, updatable = false)
@@ -21,10 +21,10 @@ public class Position {
 	private String name;
 	private String description;
 	
-	public Position() {
+	public PositionEntity() {
 	}
 
-	public Position(UUID id, Integer code, String name, String description) {
+	public PositionEntity(UUID id, Integer code, String name, String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
@@ -76,7 +76,7 @@ public class Position {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Position other = (Position) obj;
+		PositionEntity other = (PositionEntity) obj;
 		return Objects.equals(id, other.id);
 	}
 }

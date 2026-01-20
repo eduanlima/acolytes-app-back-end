@@ -19,7 +19,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_user")
-public class User {
+public class UserEntity {
 	@Id
 	@Column(nullable = false, updatable = false)
 	private UUID id;
@@ -38,10 +38,10 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserAcolyte> userAcolytes = new ArrayList<>();
 	
-	public User() {
+	public UserEntity() {
 	}
 
-	public User(UUID id, @NotNull String login, @NotNull String password, @NotNull Boolean isBlocked, Integer role,
+	public UserEntity(UUID id, @NotNull String login, @NotNull String password, @NotNull Boolean isBlocked, Integer role,
 			@NotNull PersonEntity person, List<UserAcolyte> userAcolytes) {
 		super();
 		this.id = id;

@@ -18,7 +18,7 @@ public class UserAcolyte {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("acolyteId")
@@ -28,22 +28,22 @@ public class UserAcolyte {
     protected UserAcolyte() {
     }
 
-    public UserAcolyte(UserAcolyteId id, User user, AcolyteEntity acolyte) {
+    public UserAcolyte(UserAcolyteId id, UserEntity user, AcolyteEntity acolyte) {
 		this.id = id;
 		this.user = user;
 		this.acolyte = acolyte;
 	}
     
-	public UserAcolyte(User user, AcolyteEntity acolyte) {
+	public UserAcolyte(UserEntity user, AcolyteEntity acolyte) {
 		this.user = user;
 		this.acolyte = acolyte;
 	}
 
-	public User getUser() {
+	public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import br.com.posterius.acolyteapp.entities.person.PersonEntity;
-import br.com.posterius.acolyteapp.entities.position.Position;
+import br.com.posterius.acolyteapp.entities.position.PositionEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -81,7 +81,7 @@ public class AcolyteEntity {
 		return person.getFirstName();
 	}
 	
-	public void addPosition(Position position) {
+	public void addPosition(PositionEntity position) {
 		AcolytePositionEntity acolytePosition = new AcolytePositionEntity(this, position);
 		this.acolytePositions.add(acolytePosition);
 	}

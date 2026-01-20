@@ -7,9 +7,9 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.posterius.acolyteapp.entities.position.Position;
+import br.com.posterius.acolyteapp.entities.position.PositionEntity;
 
 @Repository
-public interface PositionRepository extends JpaRepository<Position, UUID> {
-	List<Position> findAllByIdIn(Collection<UUID> ids);
+public interface PositionRepository extends JpaRepository<PositionEntity, UUID> {
+	List<PositionEntity> findAllByIdIn(Collection<UUID> ids);
 }
