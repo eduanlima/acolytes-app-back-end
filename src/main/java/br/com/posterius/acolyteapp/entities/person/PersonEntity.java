@@ -31,19 +31,19 @@ public class PersonEntity {
 	@NotNull
 	private Timestamp dateBirth;
 	@NotNull
-	private Boolean isActivated;
+	private Boolean deleted;
 	
 	public PersonEntity() {
 	}
 
 	public PersonEntity(UUID id, @NotNull Integer code, @NotNull @NotBlank String firstName,
-			@NotNull @NotBlank String lastName, @NotNull Timestamp dateBirth, @NotNull Boolean isActivated) {
+			@NotNull @NotBlank String lastName, @NotNull Timestamp dateBirth, @NotNull Boolean deleted) {
 		this.id = id;
 		this.code = code;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.dateBirth = dateBirth;
-		this.isActivated = isActivated;
+		this.deleted = deleted;
 	}
 	
 	public UUID getId() {
@@ -86,12 +86,12 @@ public class PersonEntity {
 		this.dateBirth = dateBirth;
 	}
 
-	public Boolean getIsActivated() {
-		return isActivated;
+	public Boolean getDeleted() {
+		return deleted;
 	}
 
-	public void setIsActivated(Boolean isActivated) {
-		this.isActivated = isActivated;
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override

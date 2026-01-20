@@ -27,6 +27,12 @@ public class AcolyteController {
 		return ResponseEntity.ok(acolytes);
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<AcolyteResponseDTO> findById(@PathVariable UUID id) {
+		AcolyteResponseDTO acolyteResponseDTO = acolyteService.findById(id);
+		return ResponseEntity.ok(acolyteResponseDTO);
+	}
+	
 	@PostMapping
 	public ResponseEntity<AcolyteResponseDTO> saveAcolyte(@RequestBody AcolyteRequestDTO acolyteDto){
 		AcolyteResponseDTO acolyteResponseDTO = acolyteService.createAcolyte(acolyteDto);

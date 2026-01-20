@@ -22,7 +22,7 @@ public class PersonService {
 	private PersonRepository personRepository;
 	
 	public PersonEntity validateUser(UUID personId) {
-		return personRepository.findById(personId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		return personRepository.findByIdAndDeletedFalse(personId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 	}
 	
 	@Transactional(readOnly = true)
@@ -57,6 +57,13 @@ public class PersonService {
 	}
 	
 	@Transactional
+	public void delete(UUID personId) {
+		PersonEntity person = validateUser(personId);
+		person.setDeleted(true);
+		personRepository.save(person);
+	}
+	
+	@Transactional
 	public PersonDTO insert(PersonDTO dto) {
 		PersonEntity entity = new PersonEntity();
 		copyDtoToEntity(dto, entity);
@@ -85,6 +92,7 @@ public class PersonService {
 		person.setFirstName(personDto.firstName());
 		person.setLastName(personDto.lastName());
 		person.setDateBirth(personDto.dateBirth());
+		person.setDeleted(false);
 	}
 	
 	

@@ -6,8 +6,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.posterius.acolyteapp.controller.acolyte.AcolyteRequestDTO;
 import br.com.posterius.acolyteapp.controller.acolyte.AcolyteResponseDTO;
@@ -37,13 +39,23 @@ public class AcolyteService {
 	private PersonService personService;
 	
 	public List<AcolyteResponseDTO> findAll() {
-		return acolyteRepository.findAll().stream()
+		return acolyteRepository.findAllNotDeleted().stream()
 				.map(a -> new AcolyteResponseDTO(a.getId(), new PersonRequestDTO(a.getPerson()),
 						a.getAcolytePositions().stream()
 								.map(p -> new PositionDTO(p.getPosition().getId(), p.getPosition().getCode(),
 										p.getPosition().getName(), p.getPosition().getDescription()))
 								.toList()))
 				.toList();
+	}
+	
+	public AcolyteResponseDTO findById(UUID acolyteId) {
+		Acolyte acolyte = acolyteRepository.findById(acolyteId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		
+		if (acolyte.getPerson().getDeleted())
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		
+		AcolyteResponseDTO acolyteResponseDTO = new AcolyteResponseDTO(acolyte.getId(), new PersonRequestDTO(acolyte.getPerson()), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList());
+		return acolyteResponseDTO;
 	}
 	
 	@Transactional
