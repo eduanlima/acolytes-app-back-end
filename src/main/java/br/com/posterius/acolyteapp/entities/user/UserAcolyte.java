@@ -1,6 +1,6 @@
 package br.com.posterius.acolyteapp.entities.user;
 
-import br.com.posterius.acolyteapp.entities.acolyte.Acolyte;
+import br.com.posterius.acolyteapp.entities.acolyte.AcolyteEntity;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,18 +23,18 @@ public class UserAcolyte {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("acolyteId")
     @JoinColumn(name = "acolyte_id", nullable = false)
-    private Acolyte acolyte;
+    private AcolyteEntity acolyte;
 
     protected UserAcolyte() {
     }
 
-    public UserAcolyte(UserAcolyteId id, User user, Acolyte acolyte) {
+    public UserAcolyte(UserAcolyteId id, User user, AcolyteEntity acolyte) {
 		this.id = id;
 		this.user = user;
 		this.acolyte = acolyte;
 	}
     
-	public UserAcolyte(User user, Acolyte acolyte) {
+	public UserAcolyte(User user, AcolyteEntity acolyte) {
 		this.user = user;
 		this.acolyte = acolyte;
 	}
@@ -47,11 +47,11 @@ public class UserAcolyte {
         this.user = user;
     }
 
-    public Acolyte getAcolyte() {
+    public AcolyteEntity getAcolyte() {
         return acolyte;
     }
 
-    public void setAcolyte(Acolyte acolyte) {
+    public void setAcolyte(AcolyteEntity acolyte) {
         this.acolyte = acolyte;
     }
 }

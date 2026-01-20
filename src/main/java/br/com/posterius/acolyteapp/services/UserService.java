@@ -13,8 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 import br.com.posterius.acolyteapp.controller.acolyte.AcolyteDTO;
 import br.com.posterius.acolyteapp.controller.user.UserAcolyteResponseDTO;
 import br.com.posterius.acolyteapp.controller.user.UserDTO;
-import br.com.posterius.acolyteapp.entities.acolyte.Acolyte;
-import br.com.posterius.acolyteapp.entities.acolyte.AcolytePosition;
+import br.com.posterius.acolyteapp.entities.acolyte.AcolyteEntity;
+import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionEntity;
 import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionId;
 import br.com.posterius.acolyteapp.entities.person.PersonEntity;
 import br.com.posterius.acolyteapp.entities.position.Position;
@@ -36,8 +36,18 @@ public class UserService {
 	@Autowired
 	private AcolyteRepository acolyteRepository;
 	
+	@Autowired
+	private PersonService personService;
+	
 	public User validateUser(UUID userId) {
 		return userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+	}
+	
+	private void copyRecordToEntity(UserDTO userDTO, User user) {
+		user.setLogin(userDTO.login());
+		user.setPassword(userDTO.password());
+		user.setIsBlocked(userDTO.isBlocked());
+		user.setRole(userDTO.role());
 	}
 	
 	@Transactional(readOnly = true)
@@ -58,19 +68,43 @@ public class UserService {
 		return user.getUserAcolytes().stream().map(a -> new UserAcolyteResponseDTO(a.getAcolyte().getPerson().getId(), a.getAcolyte().getPerson().getFirstName())).toList();
 	}
 	
+	private User save(UserDTO userDto) {
+		User user = new User();
+		
+		if (userDto.id() != null) {
+			Optional<User> optionalUser = userRepository.findById(userDto.id());
+			user = optionalUser != null ? optionalUser.get() : user;
+		}
+
+		PersonEntity person = personService.save(userDto.person());
+		user.setPerson(person);
+		
+		copyRecordToEntity(userDto, user);
+		user = userRepository.save(user);		
+		return user;
+	}
+	
+	public UserDTO create(UserDTO userDTO) {
+		return new UserDTO(save(userDTO));
+	}
+	
+	public UserDTO update(UUID id, UserDTO userDTO) {
+		return new UserDTO(save(new UserDTO(id, userDTO)));
+	}
+	
 	@Transactional
 	public void createAcolyteByUser(UUID userId, AcolyteDTO acolyteDto) {
 		User user = validateUser(userId);
 		PersonEntity person = user.getPerson();
 		
 		List<Position> positions = positionRepository.findAllByIdIn(acolyteDto.positions().stream().map(p -> p.id()).toList());
-		Acolyte acolyte = new Acolyte();
+		AcolyteEntity acolyte = new AcolyteEntity();
 		acolyte.setPerson(person);
 		acolyte = acolyteRepository.saveAndFlush(acolyte);
 		
 		for (Position position: positions) {
 			AcolytePositionId acolytePositionId = new AcolytePositionId(person.getId(), position.getId());
-			AcolytePosition acolytePosition = new AcolytePosition();
+			AcolytePositionEntity acolytePosition = new AcolytePositionEntity();
 			acolytePosition.setId(acolytePositionId);
 			acolytePosition.setAcolyte(acolyte);
 			acolytePosition.setPosition(position);

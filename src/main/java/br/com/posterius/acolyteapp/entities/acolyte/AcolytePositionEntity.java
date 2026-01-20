@@ -10,22 +10,22 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_acolyte_position")
-public class AcolytePosition {
+public class AcolytePositionEntity {
 	@EmbeddedId
 	private AcolytePositionId id;
 	@ManyToOne
 	@MapsId("acolyteId")
 	@JoinColumn(name = "acolyte_id", nullable = false)
-	private Acolyte acolyte;
+	private AcolyteEntity acolyte;
 	@ManyToOne
 	@MapsId("positionId")
 	@JoinColumn(name = "position_id", nullable = false)
 	private Position position;
 	
-	public AcolytePosition() {
+	public AcolytePositionEntity() {
 	}
 	
-	public AcolytePosition(Acolyte acolyte, Position position) {
+	public AcolytePositionEntity(AcolyteEntity acolyte, Position position) {
 		this.acolyte = acolyte;
 		this.position = position;
 	}
@@ -38,11 +38,11 @@ public class AcolytePosition {
 		this.id = id;
 	}
 
-	public Acolyte getAcolyte() {
+	public AcolyteEntity getAcolyte() {
 		return acolyte;
 	}
 
-	public void setAcolyte(Acolyte acolyte) {
+	public void setAcolyte(AcolyteEntity acolyte) {
 		this.acolyte = acolyte;
 	}
 

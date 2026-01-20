@@ -20,7 +20,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_acolyte")
-public class Acolyte {
+public class AcolyteEntity {
 	@Id
 	@Column(nullable = false, updatable = false)
 	private UUID id;
@@ -30,18 +30,18 @@ public class Acolyte {
 	@JoinColumn(name = "id")
 	private PersonEntity person;
 	@OneToMany(mappedBy = "acolyte", cascade = CascadeType.ALL)
-	private List<AcolytePosition> acolytePositions = new ArrayList<>();
+	private List<AcolytePositionEntity> acolytePositions = new ArrayList<>();
 	
-	public Acolyte() {
+	public AcolyteEntity() {
 	}
 	
-	public Acolyte(@NotNull PersonEntity person, List<AcolytePosition> acolytePositions) {
+	public AcolyteEntity(@NotNull PersonEntity person, List<AcolytePositionEntity> acolytePositions) {
 		super();
 		this.person = person;
 		this.acolytePositions = acolytePositions;
 	}
 
-	public Acolyte(UUID id, @NotNull PersonEntity person) {
+	public AcolyteEntity(UUID id, @NotNull PersonEntity person) {
 		this.id = id;
 		this.person = person;
 	}
@@ -62,16 +62,16 @@ public class Acolyte {
 		this.person = person;
 	}
 
-	public List<AcolytePosition> getAcolytePositions() {
+	public List<AcolytePositionEntity> getAcolytePositions() {
 		return acolytePositions;
 	}
 	
-	public void setAcolytePositions(List<AcolytePosition> acolytePositions) {
+	public void setAcolytePositions(List<AcolytePositionEntity> acolytePositions) {
 		this.acolytePositions = acolytePositions;
 	}
 
-	public static Acolyte createFor(PersonEntity person) {
-		Acolyte acolyte = new Acolyte();
+	public static AcolyteEntity createFor(PersonEntity person) {
+		AcolyteEntity acolyte = new AcolyteEntity();
 		acolyte.setPerson(person);
 		return acolyte;
 	}
@@ -82,7 +82,7 @@ public class Acolyte {
 	}
 	
 	public void addPosition(Position position) {
-		AcolytePosition acolytePosition = new AcolytePosition(this, position);
+		AcolytePositionEntity acolytePosition = new AcolytePositionEntity(this, position);
 		this.acolytePositions.add(acolytePosition);
 	}
 }

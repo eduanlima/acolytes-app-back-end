@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import br.com.posterius.acolyteapp.entities.acolyte.Acolyte;
+import br.com.posterius.acolyteapp.entities.acolyte.AcolyteEntity;
 
 @Repository
-public interface AcolyteRepository extends JpaRepository<Acolyte, UUID> {
-	@Query("SELECT acolyte FROM Acolyte acolyte WHERE acolyte.person.deleted = false")
-	List<Acolyte> findAllNotDeleted();
+public interface AcolyteRepository extends JpaRepository<AcolyteEntity, UUID> {
+	@Query("SELECT acolyte FROM AcolyteEntity acolyte WHERE acolyte.person.deleted = false")
+	List<AcolyteEntity> findAllNotDeleted();
 }

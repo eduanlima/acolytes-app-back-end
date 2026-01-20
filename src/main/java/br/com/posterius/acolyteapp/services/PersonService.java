@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.posterius.acolyteapp.controller.person.PersonDTO;
-import br.com.posterius.acolyteapp.controller.person.PersonRequestDTO;
 import br.com.posterius.acolyteapp.entities.person.PersonEntity;
 import br.com.posterius.acolyteapp.repositories.person.PersonRepository;
 
@@ -38,7 +37,7 @@ public class PersonService {
 	} 
 	
 	@Transactional
-	public PersonEntity save(PersonRequestDTO personDto) {
+	public PersonEntity save(PersonDTO personDto) {
 		PersonEntity person = new PersonEntity();
 		
 		if (personDto.id() != null) {
@@ -76,9 +75,9 @@ public class PersonService {
 	@Transactional
 	public PersonDTO update(UUID id, PersonDTO dto) {
 		PersonEntity entity = personRepository.getReferenceById(id);
-		entity.setFirstName(dto.getFirstName());
-		entity.setLastName(dto.getLastName());
-		entity.setDateBirth(dto.getDateBirth());
+		entity.setFirstName(dto.firstName());
+		entity.setLastName(dto.lastName());
+		entity.setDateBirth(dto.dateBirth());
 		
 		entity = personRepository.save(entity);
 		return new PersonDTO(entity);
@@ -88,7 +87,7 @@ public class PersonService {
 		BeanUtils.copyProperties(dto, entity);
 	}
 	
-	private void copyRecordToEntity(PersonRequestDTO personDto, PersonEntity person) {
+	private void copyRecordToEntity(PersonDTO personDto, PersonEntity person) {
 		person.setFirstName(personDto.firstName());
 		person.setLastName(personDto.lastName());
 		person.setDateBirth(personDto.dateBirth());

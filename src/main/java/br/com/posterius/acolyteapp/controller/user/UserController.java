@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,18 @@ public class UserController {
 	public ResponseEntity<UserDTO> findById(@PathVariable UUID id) {
 		UserDTO dto = userService.findById(id);
 		return ResponseEntity.ok(dto);
+	}
+	
+	@PostMapping
+	public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO){
+		userDTO = userService.create(userDTO);
+		return ResponseEntity.ok(userDTO);
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<UserDTO> update(@PathVariable UUID id, @RequestBody UserDTO userDTO){
+		userDTO = userService.update(id, userDTO);
+		return ResponseEntity.ok(userDTO);
 	}
 	
 	@GetMapping("/{idUser}/acolytes")

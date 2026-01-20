@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.posterius.acolyteapp.controller.acolyte.AcolyteDTO;
-import br.com.posterius.acolyteapp.controller.person.PersonRequestDTO;
+import br.com.posterius.acolyteapp.controller.person.PersonDTO;
 import br.com.posterius.acolyteapp.controller.position.PositionDTO;
-import br.com.posterius.acolyteapp.entities.acolyte.Acolyte;
-import br.com.posterius.acolyteapp.entities.acolyte.AcolytePosition;
+import br.com.posterius.acolyteapp.entities.acolyte.AcolyteEntity;
+import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionEntity;
 import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionId;
 import br.com.posterius.acolyteapp.entities.person.PersonEntity;
 import br.com.posterius.acolyteapp.entities.position.Position;
@@ -37,7 +37,7 @@ public class AcolyteService {
 	@Autowired
 	private PersonService personService;
 	
-	public Acolyte validateAcolyte(UUID acolyteId) {
+	public AcolyteEntity validateAcolyte(UUID acolyteId) {
 		return acolyteRepository.findById(acolyteId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 	}
 	
@@ -46,26 +46,26 @@ public class AcolyteService {
 				.map(a -> new AcolyteDTO(a.getId(),
 						a.getAcolytePositions().stream()
 								.map(p -> new PositionDTO(p.getPosition()))
-								.toList(), new PersonRequestDTO(a.getPerson()), null))
+								.toList(), new PersonDTO(a.getPerson()), null))
 				.toList();
 	}
 	
 	public AcolyteDTO findById(UUID acolyteId) {
-		Acolyte acolyte = acolyteRepository.findById(acolyteId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		AcolyteEntity acolyte = acolyteRepository.findById(acolyteId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		
 		if (acolyte.getPerson().getDeleted())
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		
-		AcolyteDTO acolyteDTO = new AcolyteDTO(acolyte.getId(), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList(), new PersonRequestDTO(acolyte.getPerson()), null);
+		AcolyteDTO acolyteDTO = new AcolyteDTO(acolyte.getId(), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList(), new PersonDTO(acolyte.getPerson()), null);
 		return acolyteDTO;
 	}
 	
 	@Transactional
-	private Acolyte save(User user, AcolyteDTO acolyteDto) {
-		Acolyte acolyte = new Acolyte();
+	private AcolyteEntity save(User user, AcolyteDTO acolyteDto) {
+		AcolyteEntity acolyte = new AcolyteEntity();
 		
 		if (acolyteDto.id() != null) {
-			Optional<Acolyte> optionalAcolyte = acolyteRepository.findById(acolyteDto.id());
+			Optional<AcolyteEntity> optionalAcolyte = acolyteRepository.findById(acolyteDto.id());
 			acolyte = optionalAcolyte != null ? optionalAcolyte.get() : acolyte;
 		}
 		
@@ -81,7 +81,7 @@ public class AcolyteService {
 		
 		for (Position position: positions) {
 			AcolytePositionId acolytePositionId = new AcolytePositionId(person.getId(), position.getId());
-			AcolytePosition acolytePosition = new AcolytePosition();
+			AcolytePositionEntity acolytePosition = new AcolytePositionEntity();
 			acolytePosition.setId(acolytePositionId);
 			acolytePosition.setAcolyte(acolyte);
 			acolytePosition.setPosition(position);
@@ -94,8 +94,8 @@ public class AcolyteService {
 	
 	public AcolyteDTO save(AcolyteDTO acolyteDto) {
 		User user = userService.validateUser(acolyteDto.creatorId());		
-		Acolyte acolyte = save(user, acolyteDto);
-		acolyteDto = new AcolyteDTO(acolyte.getId(), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList(), new PersonRequestDTO(acolyte.getPerson()), null);
+		AcolyteEntity acolyte = save(user, acolyteDto);
+		acolyteDto = new AcolyteDTO(acolyte.getId(), acolyte.getAcolytePositions().stream().map(p -> new PositionDTO(p.getPosition())).toList(), new PersonDTO(acolyte.getPerson()), null);
 		return acolyteDto;
 	}
 	
@@ -108,7 +108,7 @@ public class AcolyteService {
 	}
 	
 	public void delete(UUID acolyteId) {
-		Acolyte acolyte = validateAcolyte(acolyteId);
+		AcolyteEntity acolyte = validateAcolyte(acolyteId);
 		personService.delete(acolyte.getPerson().getId());
 	}
 }
