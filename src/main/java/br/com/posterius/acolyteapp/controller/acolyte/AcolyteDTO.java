@@ -10,4 +10,8 @@ public record AcolyteDTO(UUID id, List<PositionDTO> positions, PersonDTO person,
 	public AcolyteDTO(UUID id, AcolyteDTO acolyteRequestDTO) {
 		this (id, acolyteRequestDTO.positions(), acolyteRequestDTO.person(), acolyteRequestDTO.creatorId());
 	}
+	
+	public AcolyteDTO(AcolyteDTO acolyteRequestDTO, PersonDTO person) {
+		this (acolyteRequestDTO.id(), acolyteRequestDTO.positions(), person, acolyteRequestDTO.creatorId());
+	}
 }

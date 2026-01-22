@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.posterius.acolyteapp.controller.acolyte.AcolyteDTO;
+import br.com.posterius.acolyteapp.controller.person.PersonDTO;
 import br.com.posterius.acolyteapp.controller.user.UserAcolyteResponseDTO;
 import br.com.posterius.acolyteapp.controller.user.UserDTO;
 import br.com.posterius.acolyteapp.entities.acolyte.AcolyteEntity;
@@ -18,9 +19,9 @@ import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionEntity;
 import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionId;
 import br.com.posterius.acolyteapp.entities.person.PersonEntity;
 import br.com.posterius.acolyteapp.entities.position.PositionEntity;
-import br.com.posterius.acolyteapp.entities.user.UserEntity;
 import br.com.posterius.acolyteapp.entities.user.UserAcolyte;
 import br.com.posterius.acolyteapp.entities.user.UserAcolyteId;
+import br.com.posterius.acolyteapp.entities.user.UserEntity;
 import br.com.posterius.acolyteapp.repositories.acolyte.AcolyteRepository;
 import br.com.posterius.acolyteapp.repositories.position.PositionRepository;
 import br.com.posterius.acolyteapp.repositories.user.UserRepository;
@@ -38,6 +39,9 @@ public class UserService {
 	
 	@Autowired
 	private PersonService personService;
+	
+	@Autowired
+	private AcolyteService acolyteService;
 	
 	public UserEntity validateUser(UUID userId) {
 		return userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -92,32 +96,20 @@ public class UserService {
 		return new UserDTO(save(new UserDTO(id, userDTO)));
 	}
 	
+	public void bindUserAndAcolyte(UserEntity user, UUID acolyteId) {
+		UserAcolyteId userAcolyteId = new UserAcolyteId(user.getId(), acolyteId);
+		UserAcolyte userAcolyte = new UserAcolyte(userAcolyteId, user, null);
+		user.getUserAcolytes().add(userAcolyte);
+		userRepository.save(user);
+	}
+	
 	@Transactional
 	public void createAcolyteByUser(UUID userId, AcolyteDTO acolyteDto) {
 		UserEntity user = validateUser(userId);
 		PersonEntity person = user.getPerson();
+		acolyteDto = new AcolyteDTO(acolyteDto, new PersonDTO(person));
+		acolyteDto = acolyteService.create(acolyteDto);
 		
-		List<PositionEntity> positions = positionRepository.findAllByIdIn(acolyteDto.positions().stream().map(p -> p.id()).toList());
-		AcolyteEntity acolyte = new AcolyteEntity();
-		acolyte.setPerson(person);
-		acolyte = acolyteRepository.saveAndFlush(acolyte);
-		
-		for (PositionEntity position: positions) {
-			AcolytePositionId acolytePositionId = new AcolytePositionId(person.getId(), position.getId());
-			AcolytePositionEntity acolytePosition = new AcolytePositionEntity();
-			acolytePosition.setId(acolytePositionId);
-			acolytePosition.setAcolyte(acolyte);
-			acolytePosition.setPosition(position);
-			
-	        acolyte.getAcolytePositions().add(acolytePosition);
-		}
-		
-		acolyte = acolyteRepository.save(acolyte);
-		
-		UserAcolyteId userAcolyteId = new UserAcolyteId(user.getId(), acolyte.getId());
-		UserAcolyte userAcolyte = new UserAcolyte(userAcolyteId, user, acolyte);
-		
-		user.getUserAcolytes().add(userAcolyte);
-		userRepository.save(user);
+		bindUserAndAcolyte(user, acolyteDto.id());
 	}
 }
