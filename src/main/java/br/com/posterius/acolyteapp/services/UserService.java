@@ -11,12 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.posterius.acolyteapp.controller.acolyte.AcolyteDTO;
-import br.com.posterius.acolyteapp.controller.person.PersonDTO;
 import br.com.posterius.acolyteapp.controller.user.UserAcolyteResponseDTO;
 import br.com.posterius.acolyteapp.controller.user.UserDTO;
 import br.com.posterius.acolyteapp.entities.acolyte.AcolyteEntity;
-import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionEntity;
-import br.com.posterius.acolyteapp.entities.acolyte.AcolytePositionId;
 import br.com.posterius.acolyteapp.entities.person.PersonEntity;
 import br.com.posterius.acolyteapp.entities.position.PositionEntity;
 import br.com.posterius.acolyteapp.entities.user.UserAcolyte;
@@ -39,9 +36,6 @@ public class UserService {
 	
 	@Autowired
 	private PersonService personService;
-	
-	@Autowired
-	private AcolyteService acolyteService;
 	
 	public UserEntity validateUser(UUID userId) {
 		return userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -107,9 +101,17 @@ public class UserService {
 	public void createAcolyteByUser(UUID userId, AcolyteDTO acolyteDto) {
 		UserEntity user = validateUser(userId);
 		PersonEntity person = user.getPerson();
-		acolyteDto = new AcolyteDTO(acolyteDto, new PersonDTO(person));
-		acolyteDto = acolyteService.create(acolyteDto);
 		
-		bindUserAndAcolyte(user, acolyteDto.id());
+		AcolyteEntity acolyte = new AcolyteEntity();
+		acolyte.setPerson(person);
+		acolyte = acolyteRepository.saveAndFlush(acolyte);
+		
+		List<PositionEntity> positions = positionRepository.findAllByIdIn(acolyteDto.positions().stream().map(p -> p.id()).toList());
+		//acolyteService.bindAcolytePosition(acolyte, positions);
+		
+		UserAcolyteId userAcolyteId = new UserAcolyteId(user.getId(), acolyte.getId());
+		UserAcolyte userAcolyte = new UserAcolyte(userAcolyteId, user, acolyte);
+		user.getUserAcolytes().add(userAcolyte);
+		userRepository.save(user);
 	}
 }

@@ -60,6 +60,20 @@ public class AcolyteService {
 		return acolyteDTO;
 	}
 	
+	public void bindAcolytePosition(AcolyteEntity acolyte, List<PositionEntity> positions) {
+		for (PositionEntity position: positions) {
+			AcolytePositionId acolytePositionId = new AcolytePositionId(acolyte.getId(), position.getId());
+			AcolytePositionEntity acolytePosition = new AcolytePositionEntity();
+			acolytePosition.setId(acolytePositionId);
+			acolytePosition.setAcolyte(acolyte);
+			acolytePosition.setPosition(position);
+	        acolyte.getAcolytePositions().add(acolytePosition);
+		}
+		
+		acolyte = acolyteRepository.save(acolyte);
+	}
+	
+	
 	@Transactional
 	private AcolyteEntity save(UserEntity user, AcolyteDTO acolyteDto) {
 		AcolyteEntity acolyte = new AcolyteEntity();

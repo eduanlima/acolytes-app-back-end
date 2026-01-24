@@ -7,11 +7,10 @@ import br.com.posterius.acolyteapp.entities.acolyte.AcolyteEntity;
 
 @Component
 public class AcolyteMapper {
-	public AcolyteEntity toEntity(AcolyteDTO acolyteDto) {
+	public static final AcolyteEntity toEntity(AcolyteDTO acolyteDto) {
 		AcolyteEntity acolyte = new AcolyteEntity();
 		acolyte.setId(acolyteDto.id());
-		acolyte.setPerson(null);
-		acolyte.setAcolytePositions(null);
+		acolyte.setPerson(PersonMapper.toEntity(acolyteDto.person()));
 		return new AcolyteEntity(); 
 	}
 }

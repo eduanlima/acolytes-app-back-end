@@ -52,7 +52,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/{userId}/acolyte")
-	public ResponseEntity<Void> createAcolyteByUser(@PathVariable UUID userId, @RequestBody AcolyteDTO acolyteDto){
+	public ResponseEntity<UserDTO> createAcolyteByUser(@PathVariable UUID userId, @RequestBody AcolyteDTO acolyteDto){
 		userService.createAcolyteByUser(userId, acolyteDto);
 		return ResponseEntity.ok().build();
 	}
