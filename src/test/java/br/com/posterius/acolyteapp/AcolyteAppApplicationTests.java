@@ -1,4 +1,4 @@
-package br.com.posterius.acolyte_app;
+package br.com.posterius.acolyteapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
