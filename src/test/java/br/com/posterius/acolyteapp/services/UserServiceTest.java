@@ -3,16 +3,23 @@ package br.com.posterius.acolyteapp.services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import br.com.posterius.acolyteapp.controller.user.UserDTO;
 import br.com.posterius.acolyteapp.entities.person.PersonEntity;
@@ -35,16 +42,29 @@ public class UserServiceTest {
 	@Mock
 	private AcolyteRepository acolyteRepository;
 
-    @Test
-    @DisplayName("Should return a list of user with only one register.")
-    public void shouldReturnAllUsersWhenUserExits() {
+    @BeforeEach
+    public void setup() {
         PersonEntity personEntity = new PersonEntity(UUID.fromString("50f0c341-ceb5-4aa9-971f-fb14337abd0c"), 1,"Alphonsus","Mary of Ligouri", DataTestsHelper.stringToTimestamp("1990-01-01 00:00:00"), false);
         UserEntity userEntity = new UserEntity(UUID.fromString("50f0c341-ceb5-4aa9-971f-fb14337abd0c"), "test@test.com", "12345678", false, null, personEntity, new ArrayList<>());
         
-        Mockito.when(userRepository.findAll()).thenReturn(Collections.singletonList(userEntity));
-        
-        List<UserDTO> users = userService.findAll();
+        lenient().when(userRepository.findAll()).thenReturn(Collections.singletonList(userEntity));
+        lenient().when(userRepository.findById(UUID.fromString("50f0c341-ceb5-4aa9-971f-fb14337abd0c"))).thenReturn(Optional.of(userEntity));
+    }
 
+    @Test
+    @DisplayName("Should return a list of user with only one register.")
+    public void shouldReturnAllUsersWhenUserExits() {
+        List<UserDTO> users = userService.findAll();
+        
+        verify(userRepository).findAll();
+        verifyNoMoreInteractions(userRepository);
         Assertions.assertEquals(1, users.size());
+    }
+
+    @Test
+    @DisplayName("Should get a user from id.")
+    public void shouldFindOneUserFromId() {
+        UserDTO userDTO = userService.findById(UUID.fromString("50f0c341-ceb5-4aa9-971f-fb14337abd0c"));
+        assertNotNull(userDTO);
     }
 }
