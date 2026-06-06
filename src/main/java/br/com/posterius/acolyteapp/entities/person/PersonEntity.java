@@ -1,6 +1,8 @@
 package br.com.posterius.acolyteapp.entities.person;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -32,6 +34,8 @@ public class PersonEntity {
 	private Timestamp dateBirth;
 	@NotNull
 	private Boolean deleted;
+
+	private static final int MINIMUM_AGE = 18;
 	
 	public PersonEntity() {
 	}
@@ -42,8 +46,12 @@ public class PersonEntity {
 		this.code = code;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.dateBirth = dateBirth;
 		this.deleted = deleted;
+
+		if (!hasMinimumAge(dateBirth))
+			throw new IllegalArgumentException("Idade deve ser maior igual ou superior a 18 anos.");
+
+		this.dateBirth = dateBirth;
 	}
 	
 	public UUID getId() {
@@ -92,6 +100,11 @@ public class PersonEntity {
 
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	private boolean hasMinimumAge(Timestamp dateBirth) {
+		LocalDate localDateBirth = dateBirth.toLocalDateTime().toLocalDate();
+		return Period.between(localDateBirth, LocalDate.now()).getYears() >= MINIMUM_AGE;
 	}
 
 	@Override
