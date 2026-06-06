@@ -91,6 +91,9 @@ public class PersonEntity {
 	}
 
 	public void setDateBirth(Timestamp dateBirth) {
+		if (!hasMinimumAge(dateBirth))
+			throw new IllegalArgumentException("Idade deve ser maior igual ou superior a 18 anos.");
+
 		this.dateBirth = dateBirth;
 	}
 
