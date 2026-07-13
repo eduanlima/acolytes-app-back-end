@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 import br.com.posterius.acolyteapp.controller.acolyte.AcolyteDTO;
 import br.com.posterius.acolyteapp.entities.acolyte.AcolyteEntity;
-
 @Component
 public class AcolyteMapper {
 	public static final AcolyteEntity toEntity(AcolyteDTO acolyteDto) {
