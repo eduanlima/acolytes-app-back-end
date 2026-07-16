@@ -19,8 +19,11 @@ import br.com.posterius.acolyteapp.services.UserService;
 @RestController	
 @RequestMapping(value = "/user")
 public class UserController {
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
+
+	UserController(UserService userService) {
+		this.userService = userService;
+	}
 	
 	@GetMapping
 	public List<UserDTO> finAll() {
@@ -56,4 +59,11 @@ public class UserController {
 		userService.createAcolyteByUser(userId, acolyteDto);
 		return ResponseEntity.ok().build();
 	}
+
+	@PostMapping("/login")
+	public ResponseEntity<UserTokenDTO> postMethodName(@RequestBody UserDTO userDTO) {
+		UserTokenDTO userTokenDTO = userService.login(userDTO);
+		return ResponseEntity.ok(userTokenDTO);
+	}
+	
 }
