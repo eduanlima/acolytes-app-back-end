@@ -24,6 +24,7 @@ import br.com.posterius.acolyteapp.entities.user.UserEntity;
 import br.com.posterius.acolyteapp.repositories.acolyte.AcolyteRepository;
 import br.com.posterius.acolyteapp.repositories.position.PositionRepository;
 import br.com.posterius.acolyteapp.repositories.user.UserRepository;
+import br.com.posterius.acolyteapp.security.TokenUtil;
 
 @Service 
 public class UserService {
@@ -127,6 +128,6 @@ public class UserService {
 		if (!bCryptPasswordEncoder.matches(userDTO.password(), user.getPassword()))
 			new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-		return new UserTokenDTO("security123");
+		return new UserTokenDTO(TokenUtil.encode(user));
 	}
 }
