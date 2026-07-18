@@ -1,8 +1,12 @@
 package br.com.posterius.acolyteapp.entities.user;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.posterius.acolyteapp.entities.person.PersonEntity;
 import jakarta.persistence.CascadeType;
@@ -19,7 +23,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_user")
-public class UserEntity {
+public class UserEntity implements UserDetails {
 	@Id
 	@Column(nullable = false, updatable = false)
 	private UUID id;
@@ -29,7 +33,7 @@ public class UserEntity {
 	private String password;
 	@NotNull
 	private Boolean isBlocked;
-	private Integer role;
+	private Role role;
 	@NotNull
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@MapsId
@@ -41,7 +45,7 @@ public class UserEntity {
 	public UserEntity() {
 	}
 
-	public UserEntity(UUID id, @NotNull String login, @NotNull String password, @NotNull Boolean isBlocked, Integer role,
+	public UserEntity(UUID id, @NotNull String login, @NotNull String password, @NotNull Boolean isBlocked, Role role,
 			@NotNull PersonEntity person, List<UserAcolyte> userAcolytes) {
 		super();
 		this.id = id;
@@ -85,11 +89,11 @@ public class UserEntity {
 		this.isBlocked = isBlocked;
 	}
 
-	public Integer getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(Integer role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 
@@ -129,5 +133,17 @@ public class UserEntity {
 		}
 
 		return hasNumber && hasSpecialChar && hasUpperCase;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
 	}
 }

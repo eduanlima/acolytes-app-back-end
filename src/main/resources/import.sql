@@ -5,9 +5,9 @@ INSERT INTO tb_person (id, code, first_name, last_name, date_birth, deleted) VAL
 INSERT INTO tb_person (id, code, first_name, last_name, date_birth, deleted) VALUES ('21662e5e-c8b1-4a9d-a102-fcd600e9d425', 4,'Thomas','More', '1995-01-07 00:00:00', false);
 INSERT INTO tb_person (id, code, first_name, last_name, date_birth, deleted) VALUES ('c0235ea5-b15b-443c-ab9b-4f44de7c498a', 5,'Joseph','Shanches Del Rio', '2015-01-08 00:00:00', false);
 --User
-INSERT INTO tb_user (id, login, password, is_blocked) VALUES ('50f0c341-ceb5-4aa9-971f-fb14337abd0c','test@test.com','12345678', false);
-INSERT INTO tb_user (id, login, password, is_blocked) VALUES ('21662e5e-c8b1-4a9d-a102-fcd600e9d425','test2@test.com','1234567890', false);
-INSERT INTO tb_user (id, login, password, is_blocked) VALUES ('76484b82-ce0c-4d3f-bcfa-46637ffcf508','test3@test.com','12345678901', false);
+INSERT INTO tb_user (id, login, password, is_blocked, role) VALUES ('50f0c341-ceb5-4aa9-971f-fb14337abd0c','test@test.com','12345678', false, 'admin');
+INSERT INTO tb_user (id, login, password, is_blocked, role) VALUES ('21662e5e-c8b1-4a9d-a102-fcd600e9d425','test2@test.com','1234567890', false, 'user');
+INSERT INTO tb_user (id, login, password, is_blocked, role) VALUES ('76484b82-ce0c-4d3f-bcfa-46637ffcf508','test3@test.com','12345678901', false, 'user');
 
 --Acolyte
 INSERT INTO tb_acolyte (id) VALUES ('50f0c341-ceb5-4aa9-971f-fb14337abd0c');
