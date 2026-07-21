@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,18 +29,21 @@ import br.com.posterius.acolyteapp.security.TokenUtil;
 
 @Service 
 public class UserService {
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private PositionRepository positionRepository;
-	
-	@Autowired
-	private AcolyteRepository acolyteRepository;
-	
-	@Autowired
-	private PersonService personService;
-	
+	private final UserRepository userRepository;
+	private final PositionRepository positionRepository;
+	private final AcolyteRepository acolyteRepository;
+	private final PersonService personService;
+	private final PasswordEncoder passwordEncoder;
+
+	public UserService(UserRepository userRepository, PositionRepository positionRepository,
+			AcolyteRepository acolyteRepository, PersonService personService, PasswordEncoder passwordEncoder) {
+		this.userRepository = userRepository;
+		this.positionRepository = positionRepository;
+		this.acolyteRepository = acolyteRepository;
+		this.personService = personService;
+		this.passwordEncoder = passwordEncoder;
+	}
+
 	public UserEntity validateUser(UUID userId) {
 		return userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 	}
@@ -47,8 +51,7 @@ public class UserService {
 	private void copyRecordToEntity(UserDTO userDTO, UserEntity user) {
 		user.setLogin(userDTO.login());
 
-		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
-		user.setPassword(bCryptPasswordEncoder.encode(userDTO.password()));
+		user.setPassword(passwordEncoder.encode(userDTO.password()));
 
 		user.setIsBlocked(userDTO.isBlocked());
 		user.setRole(userDTO.role());
@@ -124,8 +127,7 @@ public class UserService {
 	public UserTokenDTO login(UserDTO userDTO) {
 		UserEntity user = userRepository.findByLogin(userDTO.login()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-		if (!bCryptPasswordEncoder.matches(userDTO.password(), user.getPassword()))
+		if (!passwordEncoder.matches(userDTO.password(), user.getPassword()))
 			new ResponseStatusException(HttpStatus.NOT_FOUND);
 
 		return new UserTokenDTO(TokenUtil.encode(user));

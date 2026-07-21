@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.posterius.acolyteapp.entities.person.PersonEntity;
@@ -33,7 +34,7 @@ public class UserEntity implements UserDetails {
 	private String password;
 	@NotNull
 	private Boolean isBlocked;
-	private Role role;
+	private UserRole role;
 	@NotNull
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@MapsId
@@ -45,7 +46,7 @@ public class UserEntity implements UserDetails {
 	public UserEntity() {
 	}
 
-	public UserEntity(UUID id, @NotNull String login, @NotNull String password, @NotNull Boolean isBlocked, Role role,
+	public UserEntity(UUID id, @NotNull String login, @NotNull String password, @NotNull Boolean isBlocked, UserRole role,
 			@NotNull PersonEntity person, List<UserAcolyte> userAcolytes) {
 		super();
 		this.id = id;
@@ -89,11 +90,11 @@ public class UserEntity implements UserDetails {
 		this.isBlocked = isBlocked;
 	}
 
-	public Role getRole() {
+	public UserRole getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(UserRole role) {
 		this.role = role;
 	}
 
@@ -137,13 +138,14 @@ public class UserEntity implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+		if (role.equals(UserRole.ADMIN))
+			return List.of(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
+		return login;
 	}
 }

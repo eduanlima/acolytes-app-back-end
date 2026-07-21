@@ -3,10 +3,10 @@ package br.com.posterius.acolyteapp.controller.user;
 import java.util.UUID;
 
 import br.com.posterius.acolyteapp.controller.person.PersonDTO;
-import br.com.posterius.acolyteapp.entities.user.Role;
+import br.com.posterius.acolyteapp.entities.user.UserRole;
 import br.com.posterius.acolyteapp.entities.user.UserEntity;
 
-public record UserDTO(UUID id, String login, String password, Boolean isBlocked, Role role, PersonDTO person) {
+public record UserDTO(UUID id, String login, String password, Boolean isBlocked, UserRole role, PersonDTO person) {
 	public UserDTO(UUID id, UserDTO user) {
 		this(id, user.login(), user.password(), user.isBlocked(), user.role(), user.person());
 	}
