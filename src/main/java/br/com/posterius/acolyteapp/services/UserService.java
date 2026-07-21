@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +13,6 @@ import org.springframework.web.server.ResponseStatusException;
 import br.com.posterius.acolyteapp.controller.acolyte.AcolyteDTO;
 import br.com.posterius.acolyteapp.controller.user.UserAcolyteResponseDTO;
 import br.com.posterius.acolyteapp.controller.user.UserDTO;
-import br.com.posterius.acolyteapp.controller.user.UserTokenDTO;
 import br.com.posterius.acolyteapp.entities.acolyte.AcolyteEntity;
 import br.com.posterius.acolyteapp.entities.person.PersonEntity;
 import br.com.posterius.acolyteapp.entities.position.PositionEntity;
@@ -25,7 +22,6 @@ import br.com.posterius.acolyteapp.entities.user.UserEntity;
 import br.com.posterius.acolyteapp.repositories.acolyte.AcolyteRepository;
 import br.com.posterius.acolyteapp.repositories.position.PositionRepository;
 import br.com.posterius.acolyteapp.repositories.user.UserRepository;
-import br.com.posterius.acolyteapp.security.TokenUtil;
 
 @Service 
 public class UserService {
@@ -122,14 +118,5 @@ public class UserService {
 		UserAcolyte userAcolyte = new UserAcolyte(userAcolyteId, user, acolyte);
 		user.getUserAcolytes().add(userAcolyte);
 		userRepository.save(user);
-	}
-
-	public UserTokenDTO login(UserDTO userDTO) {
-		UserEntity user = userRepository.findByLogin(userDTO.login()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-		if (!passwordEncoder.matches(userDTO.password(), user.getPassword()))
-			new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-		return new UserTokenDTO(TokenUtil.encode(user));
 	}
 }

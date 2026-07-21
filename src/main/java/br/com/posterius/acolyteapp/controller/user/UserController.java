@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.posterius.acolyteapp.controller.acolyte.AcolyteDTO;
+import br.com.posterius.acolyteapp.controller.auth.AuthTokenDTO;
 import br.com.posterius.acolyteapp.services.UserService;
 
 @RestController	
@@ -58,12 +59,5 @@ public class UserController {
 	public ResponseEntity<UserDTO> createAcolyteByUser(@PathVariable UUID userId, @RequestBody AcolyteDTO acolyteDto){
 		userService.createAcolyteByUser(userId, acolyteDto);
 		return ResponseEntity.ok().build();
-	}
-
-	@PostMapping("/login")
-	public ResponseEntity<UserTokenDTO> postMethodName(@RequestBody UserDTO userDTO) {
-		UserTokenDTO userTokenDTO = userService.login(userDTO);
-		return ResponseEntity.ok(userTokenDTO);
-	}
-	
+	}	
 }
