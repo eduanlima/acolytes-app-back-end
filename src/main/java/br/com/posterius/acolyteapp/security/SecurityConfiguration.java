@@ -25,7 +25,7 @@ public class SecurityConfiguration {
         .authorizeHttpRequests((authorize) -> {
             authorize.requestMatchers(new AntPathRequestMatcher("/acolyte","GET")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/user", "POST")).permitAll()
-            .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
             .requestMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")
             .anyRequest().authenticated();
         })

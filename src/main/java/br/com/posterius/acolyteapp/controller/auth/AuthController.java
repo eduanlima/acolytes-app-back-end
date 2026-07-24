@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.posterius.acolyteapp.controller.user.UserDTO;
 import br.com.posterius.acolyteapp.security.Authentication;
+import br.com.posterius.acolyteapp.services.AuthenticationService;
 import br.com.posterius.acolyteapp.services.UserService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,20 +17,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    private final Authentication authentication;
 	private final AuthenticationManager authenticationManager;
+	private final AuthenticationService authenticationService;
 
-    public AuthController(Authentication authentication, AuthenticationManager authenticationManager) {
-		this.authentication = authentication;
+    public AuthController(AuthenticationManager authenticationManager, AuthenticationService authenticationService) {
 		this.authenticationManager = authenticationManager;
+		this.authenticationService = authenticationService;
 	}
 
-	@PostMapping
+	@PostMapping("/login")
 	public ResponseEntity<AuthTokenDTO> auth(@RequestBody AuthDTO authDTO) {
 		var token = new UsernamePasswordAuthenticationToken(authDTO.login(), authDTO.password());
 		authenticationManager.authenticate(token);
 
-		AuthTokenDTO userTokenDTO = authentication.login(authDTO);
+		AuthTokenDTO userTokenDTO = authenticationService.generateToken(authDTO);
 		return ResponseEntity.ok(userTokenDTO);
 	}
 }
