@@ -2,10 +2,7 @@ package br.com.posterius.acolyteapp.controller.auth;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.posterius.acolyteapp.controller.user.UserDTO;
-import br.com.posterius.acolyteapp.security.Authentication;
 import br.com.posterius.acolyteapp.services.AuthenticationService;
-import br.com.posterius.acolyteapp.services.UserService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.ResponseEntity;

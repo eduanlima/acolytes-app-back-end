@@ -18,6 +18,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+    private final AuthFilter authFilter;
+
+    public SecurityConfiguration(AuthFilter authFilter) {
+        this.authFilter = authFilter;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
@@ -29,7 +35,7 @@ public class SecurityConfiguration {
             .requestMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")
             .anyRequest().authenticated();
         })
-        .addFilterBefore(new AuthFilter(), UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

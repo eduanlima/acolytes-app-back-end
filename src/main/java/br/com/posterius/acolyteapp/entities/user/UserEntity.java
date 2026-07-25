@@ -34,6 +34,7 @@ public class UserEntity implements UserDetails {
 	private String password;
 	@NotNull
 	private Boolean isBlocked;
+	@NotNull
 	private UserRole role;
 	@NotNull
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -74,6 +75,7 @@ public class UserEntity implements UserDetails {
 		this.login = login;
 	}
 
+	@Override
 	public String getPassword() {
 		return password;
 	}
