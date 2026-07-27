@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +24,13 @@ import br.com.posterius.acolyteapp.services.AuthenticationService;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-    public static final String ISSUER = "https://posterius.com.br";
+    @Value("${auth.jwt.token.secret}")
+	private String secretKey;
+	@Value("${auth.jwt.token.expiration-time}")
+	private Integer tokenExpirationTime;
+	@Value("${auth.jwt.token.expiration-time.refresh}")
+	private Integer tokenExpirationTimeRefresh;
+    private static final String ISSUER = "https://posterius.com.br";
     private final UserRepository userRepository;
 
     public AuthenticationServiceImpl(UserRepository userRepository) {
@@ -42,19 +49,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserEntity user = userRepository.findByLogin(authDTO.login())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        return new AuthTokenDTO(generateToken(user));
+        return new AuthTokenDTO(generateToken(user, tokenExpirationTime), generateToken(user, tokenExpirationTimeRefresh));
     }
 
     private Algorithm getAlgorithm() {
-        return Algorithm.HMAC256("my-scret");
+        return Algorithm.HMAC256(secretKey);
     }
 
-    private String generateToken(UserEntity userEntity) {
+    private String generateToken(UserEntity userEntity, Integer expirationTime) {
         try {
             return JWT.create()
                 .withIssuer(ISSUER)
                 .withSubject(userEntity.getLogin())
-                .withExpiresAt(generateExpiration())
+                .withExpiresAt(generateExpiration(expirationTime))
                 .sign(getAlgorithm());
         }
         catch(JWTCreationException error){
@@ -62,8 +69,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    private Instant generateExpiration() {
-        return LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.of("-03:00"));
+    private Instant generateExpiration(Integer expirationTime) {
+        return LocalDateTime.now().plusHours(expirationTime).toInstant(ZoneOffset.of("-03:00"));
     }
 
     @Override

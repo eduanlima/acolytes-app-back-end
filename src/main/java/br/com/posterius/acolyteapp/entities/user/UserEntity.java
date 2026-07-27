@@ -75,11 +75,6 @@ public class UserEntity implements UserDetails {
 		this.login = login;
 	}
 
-	@Override
-	public String getPassword() {
-		return password;
-	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -149,5 +144,10 @@ public class UserEntity implements UserDetails {
 	@Override
 	public String getUsername() {
 		return login;
+	}
+
+	@Override
+	public String getPassword() {
+		return password;
 	}
 }
