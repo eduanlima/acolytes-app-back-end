@@ -32,6 +32,7 @@ public class SecurityConfiguration {
             authorize.requestMatchers(new AntPathRequestMatcher("/acolyte","GET")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/user", "POST")).permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
             .requestMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")
             .anyRequest().authenticated();
         })

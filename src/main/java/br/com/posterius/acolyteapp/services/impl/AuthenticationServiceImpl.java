@@ -6,6 +6,8 @@ import java.time.ZoneOffset;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import br.com.posterius.acolyteapp.controller.auth.AuthDTO;
+import br.com.posterius.acolyteapp.controller.auth.AuthRefreshTokenDTO;
 import br.com.posterius.acolyteapp.controller.auth.AuthTokenDTO;
 import br.com.posterius.acolyteapp.entities.user.UserEntity;
 import br.com.posterius.acolyteapp.repositories.user.UserRepository;
@@ -37,18 +40,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.userRepository = userRepository;
     }
 
+    private UserEntity findUserByLogin(String login) {
+        return userRepository.findByLogin(login)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByLogin(login)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return user;
+        return findUserByLogin(login);
     }
 
     @Override
     public AuthTokenDTO generateToken(AuthDTO authDTO) {
-        UserEntity user = userRepository.findByLogin(authDTO.login())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
+        UserEntity user = findUserByLogin(authDTO.login());
         return new AuthTokenDTO(generateToken(user, tokenExpirationTime), generateToken(user, tokenExpirationTimeRefresh));
     }
 
@@ -85,5 +89,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         catch (JWTVerificationException error) {
             return null;
         }
+    }
+
+    @Override
+    public AuthTokenDTO generateTokenByRefreshToken(AuthRefreshTokenDTO authRefreshTokenDTO) {
+        String login = validateToken(authRefreshTokenDTO.refreshToken());
+        UserEntity user = findUserByLogin(login);
+
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()));
+        return new AuthTokenDTO(generateToken(user, tokenExpirationTime), generateToken(user, tokenExpirationTimeRefresh));
     }
 }

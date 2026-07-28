@@ -23,11 +23,17 @@ public class AuthController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<AuthTokenDTO> auth(@RequestBody AuthDTO authDTO) {
-		var token = new UsernamePasswordAuthenticationToken(authDTO.login(), authDTO.password());
+	public ResponseEntity<AuthTokenDTO> auth(@RequestBody AuthDTO authTokenDTO) {
+		var token = new UsernamePasswordAuthenticationToken(authTokenDTO.login(), authTokenDTO.password());
 		authenticationManager.authenticate(token);
 
-		AuthTokenDTO userTokenDTO = authenticationService.generateToken(authDTO);
+		AuthTokenDTO userTokenDTO = authenticationService.generateToken(authTokenDTO);
+		return ResponseEntity.ok(userTokenDTO);
+	}
+
+	@PostMapping("/refresh-token")
+	public ResponseEntity<AuthTokenDTO> refreshToken(@RequestBody AuthRefreshTokenDTO authRefreshTokenDTO) {
+		AuthTokenDTO userTokenDTO = authenticationService.generateTokenByRefreshToken(authRefreshTokenDTO);
 		return ResponseEntity.ok(userTokenDTO);
 	}
 }
